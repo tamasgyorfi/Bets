@@ -19,7 +19,7 @@ public class Starter {
 
     private void startServer() {
 
-        Server server = new Server(new InetSocketAddress(System.getenv("HOST"), Integer.parseInt(System.getenv("PORT"))));
+        Server server = new Server(new InetSocketAddress(getHostName(), Integer.parseInt(System.getenv("PORT"))));
         server.setHandler(createContextHandler());
 
         try {
@@ -28,6 +28,11 @@ public class Starter {
         } catch (Throwable t) {
             t.printStackTrace(System.err);
         }
+    }
+
+    private String getHostName() {
+        String host = System.getenv("HOST");
+        return host == null ? "0.0.0.0" : host;
     }
 
     private ResourceConfig createResourceConfig() {
