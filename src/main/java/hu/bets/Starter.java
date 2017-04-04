@@ -1,0 +1,50 @@
+package hu.bets;
+
+import hu.bets.web.api.FootballBetResource;
+import org.glassfish.jersey.server.ResourceConfig;
+import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.servlet.ServletContextHandler;
+import org.eclipse.jetty.servlet.ServletHolder;
+import org.glassfish.jersey.jackson.JacksonFeature;
+import org.glassfish.jersey.servlet.ServletContainer;
+
+public class Starter {
+
+    public static void main(String[] args) {
+        Starter server = new Starter();
+        server.startServer();
+    }
+
+    private void startServer() {
+
+        Server server = new Server(8080);
+        server.setHandler(createContextHandler());
+
+        try {
+            server.start();
+            server.join();
+        } catch (Throwable t) {
+            t.printStackTrace(System.err);
+        }
+    }
+
+    private ResourceConfig createResourceConfig() {
+        ResourceConfig resourceConfig = new ResourceConfig();
+        resourceConfig.packages(FootballBetResource.class.getPackage().getName());
+        resourceConfig.register(JacksonFeature.class);
+
+        return resourceConfig;
+    }
+
+    private ServletContextHandler createContextHandler() {
+
+        ServletContainer servletContainer = new ServletContainer(createResourceConfig());
+        ServletHolder sh = new ServletHolder(servletContainer);
+
+        ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
+        context.setContextPath("/");
+        context.addServlet(sh, "/*");
+
+        return context;
+    }
+}
