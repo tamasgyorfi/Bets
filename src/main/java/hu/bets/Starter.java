@@ -8,6 +8,8 @@ import org.eclipse.jetty.servlet.ServletHolder;
 import org.glassfish.jersey.jackson.JacksonFeature;
 import org.glassfish.jersey.servlet.ServletContainer;
 
+import java.net.InetSocketAddress;
+
 public class Starter {
 
     public static void main(String[] args) {
@@ -17,7 +19,7 @@ public class Starter {
 
     private void startServer() {
 
-        Server server = new Server(8080);
+        Server server = new Server(new InetSocketAddress(System.getenv("HOST"), Integer.parseInt(System.getenv("PORT"))));
         server.setHandler(createContextHandler());
 
         try {
