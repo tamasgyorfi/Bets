@@ -6,19 +6,22 @@ import hu.bets.web.model.Bet;
 import hu.bets.web.model.BetResponse;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+@Component
 @Path("bets/football/v1")
 public class FootballBetResource {
 
     private static final Logger LOGGER = Logger.getLogger(FootballBetResource.class);
 
-    @Autowired
+    @Inject
     private FootballBetService footballBetService;
 
     @POST
