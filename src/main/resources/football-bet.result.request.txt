@@ -1,0 +1,9 @@
+{  
+   "userId":"aa",
+   "competitionId":"aa",
+   "matchId":"aa",
+   "homeTeamId":"aa",
+   "awayTeamId":"aa",
+   "homeTeamGoals":1,
+   "awayTeamGoals":0
+}

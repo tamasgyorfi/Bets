@@ -7,12 +7,15 @@ import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.glassfish.jersey.jackson.JacksonFeature;
 import org.glassfish.jersey.servlet.ServletContainer;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import java.net.InetSocketAddress;
 
 public class Starter {
 
     public static void main(String[] args) {
+        ApplicationContext context = new AnnotationConfigApplicationContext(ApplicationConfig.class);
         Starter server = new Starter();
         server.startServer();
     }

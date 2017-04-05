@@ -7,14 +7,14 @@ import hu.bets.model.data.UserBet;
 
 public class FootballDAO {
 
-    private CollectionFinder collectionFinder;
+    private DataSourceHolder dataSourceHolder;
 
-    private FootballDAO(CollectionFinder collectionFinder) {
-        this.collectionFinder = collectionFinder;
+    public FootballDAO(DataSourceHolder dataSourceHolder) {
+        this.dataSourceHolder = dataSourceHolder;
     }
 
     public String save(String betId, UserBet bet) {
-        MongoCollection collection = collectionFinder.getCollection();
+        MongoCollection collection = dataSourceHolder.getCollection();
 
         BasicDBObjectBuilder builder = new BasicDBObjectBuilder();
         Gson gson = new Gson();
