@@ -21,7 +21,7 @@ public class FootballBetResource {
 
     private static final Logger LOGGER = Logger.getLogger(FootballBetResource.class);
 
-    @Inject
+    @Autowired
     private FootballBetService footballBetService;
 
     @POST
