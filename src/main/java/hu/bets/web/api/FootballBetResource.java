@@ -8,7 +8,6 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -33,12 +32,11 @@ public class FootballBetResource {
         LOGGER.info("Request received: " + bet);
 
         try {
-            footballBetService.saveBet(bet);
+            String id = footballBetService.saveBet(bet);
+            return BetResponse.success(id);
         } catch (BetSaveException e) {
-
+            return BetResponse.failure(e.getMessage());
         }
-
-        return new BetResponse();
     }
 
 }

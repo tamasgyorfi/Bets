@@ -3,7 +3,9 @@ package hu.bets.data;
 import com.google.gson.Gson;
 import com.mongodb.BasicDBObjectBuilder;
 import com.mongodb.client.MongoCollection;
+import com.mongodb.util.JSON;
 import hu.bets.model.data.UserBet;
+import org.bson.Document;
 
 public class FootballDAO {
 
@@ -20,7 +22,8 @@ public class FootballDAO {
         Gson gson = new Gson();
         String jsonBet = gson.toJson(bet);
 
-        collection.insertOne(jsonBet);
+
+        collection.insertOne(Document.parse(jsonBet));
 
         return bet.getBetId();
     }
