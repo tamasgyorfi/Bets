@@ -1,11 +1,13 @@
-package hu.bets;
+package hu.bets.config;
 
 import hu.bets.data.DataSourceHolder;
 import hu.bets.data.FootballDAO;
+import hu.bets.data.MongoBasedFootballDAO;
+import hu.bets.service.DefaultFootballBetService;
 import hu.bets.service.FootballBetService;
-import hu.bets.service.IdService;
-import hu.bets.service.ModelConverterService;
+import hu.bets.service.IdGenerator;
 import hu.bets.web.api.FootballBetResource;
+import org.apache.log4j.Logger;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
@@ -20,9 +22,14 @@ import java.net.InetSocketAddress;
 @Configuration
 public class ApplicationConfig {
 
+    private static final String WEB_SERVER_HOST = "HOST";
+    private static final String WEB_SERVICE_PORT = "PORT";
+
+    private static final Logger LOGGER = Logger.getLogger(ApplicationConfig.class);
+
     @Bean
-    public IdService idService() {
-        return new IdService();
+    public IdGenerator idService() {
+        return new IdGenerator();
     }
 
     @Bean
@@ -32,17 +39,12 @@ public class ApplicationConfig {
 
     @Bean
     public FootballDAO footballDAO(DataSourceHolder dataSourceHolder) {
-        return new FootballDAO(dataSourceHolder);
+        return new MongoBasedFootballDAO(dataSourceHolder);
     }
 
     @Bean
-    public ModelConverterService modelConverterService() {
-        return new ModelConverterService();
-    }
-
-    @Bean
-    public FootballBetService betService(IdService idService, FootballDAO footballDAO, ModelConverterService modelConverterService) {
-        return new FootballBetService(idService, footballDAO, modelConverterService);
+    public FootballBetService betService(IdGenerator idService, FootballDAO footballDAO) {
+        return new DefaultFootballBetService(idService, footballDAO);
     }
 
     @Bean
@@ -88,5 +90,4 @@ public class ApplicationConfig {
     public ServletContainer servletContainer(ResourceConfig resourceConfig) {
         return new ServletContainer(resourceConfig);
     }
-
 }

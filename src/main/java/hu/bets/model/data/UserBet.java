@@ -1,6 +1,6 @@
 package hu.bets.model.data;
 
-import hu.bets.service.IdService;
+import hu.bets.service.IdGenerator;
 
 import java.time.LocalDateTime;
 
@@ -28,7 +28,7 @@ public class UserBet {
         this.homeTeamGoals = homeTeamGoals;
         this.awayTeamGoals = awayTeamGoals;
         this.eventReceived = LocalDateTime.now();
-        this.betId = new IdService().generateBetId(userId);
+        this.betId = new IdGenerator().generateBetId(userId);
     }
 
 
