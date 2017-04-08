@@ -8,14 +8,11 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
 @Component
-@Path("bets/football/v1")
+@Path("/")
 public class FootballBetResource {
 
     private static final Logger LOGGER = Logger.getLogger(FootballBetResource.class);
@@ -23,8 +20,15 @@ public class FootballBetResource {
     @Autowired
     private FootballBetService footballBetService;
 
+    @GET
+    @Path("/")
+    @Produces(MediaType.TEXT_HTML)
+    public String getDescription() {
+        return "<html><body><h1>Football-bets service up and running</h1></body></html>";
+    }
+
     @POST
-    @Path("result")
+    @Path("bets/football/v1/result")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public BetResponse postFootballResult(Bet bet) {
