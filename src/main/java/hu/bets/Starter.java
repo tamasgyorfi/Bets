@@ -1,36 +1,34 @@
 package hu.bets;
 
 import hu.bets.config.ApplicationConfig;
+import hu.bets.config.DatabaseConfig;
 import hu.bets.config.MessagingConfig;
-import hu.bets.messaging.BetAggregationRequestListener;
-import hu.bets.messaging.MessagingConstants;
+import hu.bets.config.WebConfig;
+import hu.bets.messaging.receiver.BetAggregationRequestListener;
+import hu.bets.messaging.receiver.MessageListener;
 import org.apache.log4j.Logger;
 import org.eclipse.jetty.server.Server;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
-import java.io.IOException;
-import java.util.concurrent.TimeoutException;
-
 public class Starter {
 
     private static final Logger LOGGER = Logger.getLogger(Starter.class);
 
+    private ApplicationContext context = new AnnotationConfigApplicationContext(ApplicationConfig.class,
+            MessagingConfig.class, WebConfig.class, DatabaseConfig.class);
+
     public static void main(String[] args) {
-        ApplicationContext context = new AnnotationConfigApplicationContext(ApplicationConfig.class, MessagingConfig.class);
-        Server server = context.getBean(Server.class);
-        BetAggregationRequestListener betAggregationRequestListener = context.getBean(BetAggregationRequestListener.class);
-
-
         Starter starter = new Starter();
-        starter.startMessaging(betAggregationRequestListener);
-        starter.startServer(server);
+
+        starter.startMessaging(starter.context.getBean(BetAggregationRequestListener.class));
+        starter.startServer(starter.context.getBean(Server.class));
     }
 
-    private void startMessaging(BetAggregationRequestListener betAggregationRequestListener) {
+    private void startMessaging(MessageListener messageListener) {
         try {
-            betAggregationRequestListener.receive(MessagingConstants.AGGREGATE_REQUEST_QUEUE_NAME);
-        } catch (IOException | TimeoutException e) {
+            messageListener.receive();
+        } catch (Exception e) {
             LOGGER.error(e);
         }
     }

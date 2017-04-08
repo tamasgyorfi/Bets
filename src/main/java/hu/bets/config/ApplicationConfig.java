@@ -1,50 +1,54 @@
 package hu.bets.config;
 
-import hu.bets.data.DataSourceHolder;
-import hu.bets.data.FootballDAO;
-import hu.bets.data.MongoBasedFootballDAO;
+import hu.bets.aggregation.BetAggregationExecutor;
+import hu.bets.dbaccess.DataSourceHolder;
+import hu.bets.dbaccess.FootballDAO;
+import hu.bets.dbaccess.MongoBasedFootballDAO;
+import hu.bets.model.data.BetConverter;
+import hu.bets.model.data.UserBet;
 import hu.bets.service.DefaultFootballBetService;
 import hu.bets.service.FootballBetService;
 import hu.bets.service.IdGenerator;
+import hu.bets.service.UuidIdGenerator;
 import hu.bets.web.api.FootballBetResource;
 import org.apache.log4j.Logger;
-import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.servlet.ServletContextHandler;
-import org.eclipse.jetty.servlet.ServletHolder;
-import org.glassfish.jersey.jackson.JacksonFeature;
-import org.glassfish.jersey.server.ResourceConfig;
-import org.glassfish.jersey.servlet.ServletContainer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.net.InetSocketAddress;
+import java.util.List;
+import java.util.concurrent.CompletionService;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorCompletionService;
+import java.util.concurrent.Executors;
 
 @Configuration
 public class ApplicationConfig {
 
-    private static final String WEB_SERVER_HOST = "HOST";
-    private static final String WEB_SERVICE_PORT = "PORT";
-
     private static final Logger LOGGER = Logger.getLogger(ApplicationConfig.class);
 
     @Bean
-    public IdGenerator idService() {
-        return new IdGenerator();
+    public UuidIdGenerator idService() {
+        return new UuidIdGenerator();
     }
 
     @Bean
-    public DataSourceHolder dataSourceHolder() {
-        return new DataSourceHolder();
+    public FootballDAO footballDAO(DataSourceHolder mongoDataSourceHolder) {
+        return new MongoBasedFootballDAO(mongoDataSourceHolder);
     }
 
     @Bean
-    public FootballDAO footballDAO(DataSourceHolder dataSourceHolder) {
-        return new MongoBasedFootballDAO(dataSourceHolder);
+    public IdGenerator idGenerator() {
+        return new UuidIdGenerator();
     }
 
     @Bean
-    public FootballBetService betService(IdGenerator idService, FootballDAO footballDAO) {
-        return new DefaultFootballBetService(idService, footballDAO);
+    public BetConverter betConverter(IdGenerator idGenerator) {
+        return new BetConverter(idGenerator);
+    }
+
+    @Bean
+    public FootballBetService betService(FootballDAO footballDAO, BetConverter betConverter) {
+        return new DefaultFootballBetService(footballDAO, betConverter);
     }
 
     @Bean
@@ -53,41 +57,13 @@ public class ApplicationConfig {
     }
 
     @Bean
-    public Server server(ServletContextHandler servletContextHandler) {
-
-        Server server = new Server(new InetSocketAddress(getHost(), Integer.parseInt(System.getenv("PORT"))));
-        server.setHandler(servletContextHandler);
-
-        return server;
-    }
-
-    private String getHost() {
-        String host = System.getenv("HOST");
-        return host == null ? "0.0.0.0" : host;
+    public CompletionService<List<List<UserBet>>> completionService() {
+        Executor executor = Executors.newFixedThreadPool(10);
+        return new ExecutorCompletionService<>(executor);
     }
 
     @Bean
-    public ResourceConfig resourceConfig(FootballBetResource footballResource) {
-        ResourceConfig resourceConfig = new ResourceConfig();
-        resourceConfig.register(footballResource);
-        resourceConfig.register(JacksonFeature.class);
-
-        return resourceConfig;
-    }
-
-    @Bean
-    public ServletContextHandler servletContextHandler(ServletContainer servletContainer) {
-        ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
-        ServletHolder sh = new ServletHolder(servletContainer);
-
-        context.setContextPath("/");
-        context.addServlet(sh, "/*");
-
-        return context;
-    }
-
-    @Bean
-    public ServletContainer servletContainer(ResourceConfig resourceConfig) {
-        return new ServletContainer(resourceConfig);
+    public BetAggregationExecutor betAggregationExecutor(FootballBetService footballBetService, CompletionService<List<List<UserBet>>> completionService) {
+        return new BetAggregationExecutor(completionService, footballBetService);
     }
 }

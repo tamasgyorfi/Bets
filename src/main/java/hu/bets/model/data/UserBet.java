@@ -1,12 +1,14 @@
 package hu.bets.model.data;
 
-import hu.bets.service.IdGenerator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import hu.bets.service.UuidIdGenerator;
 
 import java.time.LocalDateTime;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class UserBet {
 
-    private  String userId;
+    private String userId;
 
     private String competitionId;
     private String matchId;
@@ -19,7 +21,7 @@ public class UserBet {
     private LocalDateTime eventReceived;
     private String betId;
 
-    public UserBet(String userId, String competitionId, String matchId, String homeTeamId, String awayTeamId, byte homeTeamGoals, byte awayTeamGoals) {
+    public UserBet(String userId, String competitionId, String matchId, String homeTeamId, String awayTeamId, byte homeTeamGoals, byte awayTeamGoals, String betId) {
         this.userId = userId;
         this.competitionId = competitionId;
         this.matchId = matchId;
@@ -27,8 +29,8 @@ public class UserBet {
         this.awayTeamId = awayTeamId;
         this.homeTeamGoals = homeTeamGoals;
         this.awayTeamGoals = awayTeamGoals;
+        this.betId = betId;
         this.eventReceived = LocalDateTime.now();
-        this.betId = new IdGenerator().generateBetId(userId);
     }
 
 

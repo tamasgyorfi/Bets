@@ -1,8 +1,15 @@
 package hu.bets.model.data;
 
+import hu.bets.service.IdGenerator;
 import hu.bets.web.model.Bet;
 
 public class BetConverter {
+
+    private IdGenerator idGenerator;
+
+    public BetConverter(IdGenerator idGenerator) {
+        this.idGenerator = idGenerator;
+    }
 
     public UserBet fromBet(Bet bet) {
         return new UserBet(bet.getUserId(),
@@ -11,7 +18,8 @@ public class BetConverter {
                 bet.getHomeTeamId(),
                 bet.getAwayTeamId(),
                 bet.getHomeTeamGoals(),
-                bet.getAwayTeamGoals()
+                bet.getAwayTeamGoals(),
+                idGenerator.generateBetId(bet.getUserId())
         );
     }
 }

@@ -1,6 +1,10 @@
 package hu.bets.service;
 
+import hu.bets.model.data.BetAggregationRequest;
+import hu.bets.model.data.UserBet;
 import hu.bets.web.model.Bet;
+
+import java.util.List;
 
 /**
  * Handles communication from and to the WEB API.
@@ -15,4 +19,12 @@ public interface FootballBetService {
      * @throws BetSaveException
      */
     String saveBet(Bet bet) throws BetSaveException;
+
+    /**
+     * Finds the bets for the matches referenced by betAggregationRequest
+     *
+     * @param matchIds
+     * @return all bets related to the match IDs supplied, in batches
+     */
+    List<List<UserBet>> getBetsForMatches(List<String> matchIds);
 }

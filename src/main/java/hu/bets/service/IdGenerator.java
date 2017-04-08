@@ -1,11 +1,6 @@
 package hu.bets.service;
 
-import java.util.UUID;
+public interface IdGenerator {
 
-public class IdGenerator {
-
-    public String generateBetId(String userId) {
-        return userId + ":" + UUID.randomUUID();
-    }
-
+    String generateBetId(String userId);
 }

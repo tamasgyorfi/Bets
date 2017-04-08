@@ -1,23 +1,33 @@
 package hu.bets.service;
 
-import hu.bets.data.FootballDAO;
+import com.google.common.collect.Lists;
+import hu.bets.dbaccess.FootballDAO;
 import hu.bets.model.data.BetConverter;
+import hu.bets.model.data.UserBet;
 import hu.bets.web.model.Bet;
 
-public class DefaultFootballBetService implements FootballBetService{
+import java.util.List;
 
-    private final IdGenerator idGenerator;
+public class DefaultFootballBetService implements FootballBetService {
+
+    private static final int BATCH_SIZE = 100;
+
     private final FootballDAO footballDAO;
+    private BetConverter betConverter;
 
-    public DefaultFootballBetService(IdGenerator idGenerator, FootballDAO footballDAO) {
-        this.idGenerator = idGenerator;
+    public DefaultFootballBetService(FootballDAO footballDAO, BetConverter betConverter) {
         this.footballDAO = footballDAO;
+        this.betConverter = betConverter;
     }
 
+    @Override
     public String saveBet(Bet bet) throws BetSaveException {
-        String betId = idGenerator.generateBetId(bet.getUserId());
-        footballDAO.save(betId, new BetConverter().fromBet(bet));
+        return footballDAO.save(betConverter.fromBet(bet));
+    }
 
-        return betId;
+    @Override
+    public List<List<UserBet>> getBetsForMatches(List<String> matchIds) {
+        List<UserBet> betsForMatches = footballDAO.getBetsForMatches(matchIds);
+        return Lists.partition(betsForMatches, BATCH_SIZE);
     }
 }
