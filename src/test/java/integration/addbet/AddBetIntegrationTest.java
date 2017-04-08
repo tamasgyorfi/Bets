@@ -37,6 +37,7 @@ public class AddBetIntegrationTest {
     private static final String HOST = "localhost";
     private static final String PORT = "10000";
     private static final String ENDPOINT = "/bets/football/v1/result";
+    private static final String PROTOCOL = "http";
 
     private static ApplicationContext context;
 
@@ -101,7 +102,7 @@ public class AddBetIntegrationTest {
 
     private CloseableHttpResponse makePostRequest() throws Exception {
         CloseableHttpClient client = HttpClientBuilder.create().build();
-        HttpPost postRequest = new HttpPost("http://" + HOST + ":" + PORT + ENDPOINT);
+        HttpPost postRequest = new HttpPost(PROTOCOL + "://" + HOST + ":" + PORT + ENDPOINT);
         HttpEntity entity = new StringEntity(Constants.POST_JSON);
 
         postRequest.setEntity(entity);
