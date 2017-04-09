@@ -12,16 +12,12 @@ import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.util.EntityUtils;
 import org.junit.Test;
 
-import static integration.Constants.HOST;
-import static integration.Constants.PORT;
+import static integration.Constants.*;
 
-public class AddBetIntegrationTest {
-
-    private static final String ENDPOINT = "/bets/football/v1/result";
-    private static final String PROTOCOL = "http";
+public class EndpointsIntegrationTest {
 
     @Test
-    public void addBet() throws Exception {
+    public void callingTheAddBetWebMethodShouldSaveABetInTheDatabase() throws Exception {
         Given.theContextIsInitialized();
         Given.theWebServerIsUp();
         DataSourceHolder dataSourceHolder = Given.aBean(DataSourceHolder.class);

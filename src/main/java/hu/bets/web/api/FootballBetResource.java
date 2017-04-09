@@ -21,7 +21,6 @@ public class FootballBetResource {
     private FootballBetService footballBetService;
 
     @GET
-    @Path("/")
     @Produces(MediaType.TEXT_HTML)
     public String getDescription() {
         return "<html><body><h1>Football-bets service up and running</h1></body></html>";
