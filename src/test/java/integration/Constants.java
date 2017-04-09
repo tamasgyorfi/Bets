@@ -11,4 +11,8 @@ public class Constants {
             "   \"homeTeamGoals\":1,\n" +
             "   \"awayTeamGoals\":0\n" +
             "}";
+
+    public static final String HOST = "localhost";
+    public static final String PORT = "10000";
+
 }

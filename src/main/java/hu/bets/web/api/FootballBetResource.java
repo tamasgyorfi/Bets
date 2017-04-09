@@ -42,5 +42,4 @@ public class FootballBetResource {
             return BetResponse.failure(e.getMessage());
         }
     }
-
 }
