@@ -15,7 +15,7 @@ public class Constants {
     public static final String HOST = "localhost";
     public static final String PORT = "10000";
 
-    public static final String ENDPOINT = "/bets/football/v1/result";
+    public static final String ADD_BET_ENDPOINT = "/bets/football/v1/result";
     public static final String PROTOCOL = "http";
 
 }

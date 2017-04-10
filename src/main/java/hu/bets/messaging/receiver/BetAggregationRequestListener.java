@@ -21,6 +21,7 @@ public class BetAggregationRequestListener implements MessageListener {
         this.queueName = queueName;
     }
 
+    @Override
     public void receive() throws IOException, TimeoutException {
         channel.queueBind(queueName, EXCHANGE_NAME, AGGREGATE_REQUEST_ROUTING_KEY);
         channel.basicConsume(queueName, true, consumer);

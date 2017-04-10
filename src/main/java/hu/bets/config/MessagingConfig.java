@@ -5,10 +5,10 @@ import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.Consumer;
 import hu.bets.aggregation.BetAggregationExecutor;
-import hu.bets.messaging.sender.BetAggregateResultSender;
+import hu.bets.messaging.MessagingConstants;
 import hu.bets.messaging.receiver.BetAggregationRequestListener;
 import hu.bets.messaging.receiver.MessageConsumer;
-import hu.bets.messaging.MessagingConstants;
+import hu.bets.messaging.sender.BetAggregateResultSender;
 import hu.bets.model.data.UserBet;
 import hu.bets.util.EnvironmentVarResolver;
 import org.apache.log4j.Logger;
@@ -45,21 +45,23 @@ public class MessagingConfig {
         return null;
     }
 
-    @Bean
+    @Bean(destroyMethod = "close")
     public Connection connection(ConnectionFactory connectionFactory) {
         try {
             return connectionFactory.newConnection();
         } catch (TimeoutException | IOException e) {
+            e.printStackTrace();
             throw new IllegalStateException(e);
         }
     }
 
     @Bean
-    public ConnectionFactory connectionFactory() {
+    public ConnectionFactory connectionFactory() throws KeyManagementException, NoSuchAlgorithmException {
         ConnectionFactory factory = new ConnectionFactory();
 
         try {
             factory.setUri(EnvironmentVarResolver.getEnvVar(MESSAGING_URI, ""));
+            factory.useSslProtocol();
         } catch (URISyntaxException | NoSuchAlgorithmException | KeyManagementException e) {
             LOGGER.error("Unable to set up messaging.", e);
         }
