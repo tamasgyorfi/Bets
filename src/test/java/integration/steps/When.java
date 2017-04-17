@@ -1,5 +1,6 @@
 package integration.steps;
 
+import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Channel;
 import hu.bets.messaging.MessagingConstants;
 import integration.steps.util.ApplicationContextHolder;
@@ -10,6 +11,8 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
+
+import java.util.Map;
 
 public class When {
 
@@ -36,13 +39,15 @@ public class When {
         return client.execute(getRequest);
     }
 
-    public static void iSendAMessage(String payload) throws Exception {
+    public static void iSendAMessage(String payload, Map<String, Object> headers) throws Exception {
         Channel channel = ApplicationContextHolder.getBean(Channel.class);
         channel.queueDeclare(MessagingConstants.AGGREGATE_REPLY_QUEUE_NAME, true, false, false, null);
 
         channel.basicPublish(MessagingConstants.EXCHANGE_NAME,
                 MessagingConstants.AGGREGATE_REQUEST_ROUTING_KEY,
-                null,
+                new AMQP.BasicProperties.Builder()
+                        .headers(headers)
+                        .build(),
                 payload.getBytes());
     }
 }

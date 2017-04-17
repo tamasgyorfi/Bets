@@ -1,6 +1,5 @@
 package hu.bets.service;
 
-import hu.bets.model.data.BetAggregationRequest;
 import hu.bets.model.data.UserBet;
 import hu.bets.web.model.Bet;
 
@@ -27,4 +26,12 @@ public interface FootballBetService {
      * @return all bets related to the match IDs supplied, in batches
      */
     List<List<UserBet>> getBetsForMatches(List<String> matchIds);
+
+    /**
+     * Acknowledges all the matches as processed
+     *
+     * @param matchIds
+     * @return the user bets which were successfully acknowledged
+     */
+    List<String> acknowledgeAll(List<String> matchIds);
 }

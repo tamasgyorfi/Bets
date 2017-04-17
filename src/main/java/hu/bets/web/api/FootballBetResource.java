@@ -12,7 +12,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
 @Component
-@Path("/")
+@Path("/bets/football/v1")
 public class FootballBetResource {
 
     private static final Logger LOGGER = Logger.getLogger(FootballBetResource.class);
@@ -21,13 +21,14 @@ public class FootballBetResource {
     private FootballBetService footballBetService;
 
     @GET
+    @Path("info")
     @Produces(MediaType.TEXT_HTML)
     public String getDescription() {
         return "<html><body><h1>Football-bets service up and running</h1></body></html>";
     }
 
     @POST
-    @Path("bets/football/v1/result")
+    @Path("bet")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public BetResponse postFootballResult(Bet bet) {

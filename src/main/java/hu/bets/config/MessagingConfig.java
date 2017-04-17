@@ -4,12 +4,11 @@ import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.Consumer;
-import hu.bets.aggregation.BetAggregationExecutor;
+import hu.bets.messaging.execution.MessageExecutor;
 import hu.bets.messaging.MessagingConstants;
 import hu.bets.messaging.receiver.BetAggregationRequestListener;
 import hu.bets.messaging.receiver.MessageConsumer;
-import hu.bets.messaging.sender.BetAggregateResultSender;
-import hu.bets.model.data.UserBet;
+import hu.bets.messaging.sender.MessageSender;
 import hu.bets.util.EnvironmentVarResolver;
 import org.apache.log4j.Logger;
 import org.springframework.context.annotation.Bean;
@@ -70,12 +69,12 @@ public class MessagingConfig {
     }
 
     @Bean
-    public Consumer consumer(Channel channel, BetAggregationExecutor executor) {
+    public Consumer consumer(Channel channel, MessageExecutor executor) {
         return new MessageConsumer(channel, executor);
     }
 
     @Bean(initMethod = "start", destroyMethod = "stop")
-    public BetAggregateResultSender betAggregateResultSender(CompletionService<List<List<UserBet>>> completionService, Channel channel) {
-        return new BetAggregateResultSender(completionService, channel);
+    public MessageSender betAggregateResultSender(CompletionService<List<String>> completionService, Channel channel) {
+        return new MessageSender(completionService, channel);
     }
 }

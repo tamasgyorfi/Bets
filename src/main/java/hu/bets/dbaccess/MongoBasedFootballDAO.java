@@ -1,9 +1,11 @@
 package hu.bets.dbaccess;
 
 import com.google.gson.Gson;
+import com.mongodb.BasicDBObject;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Filters;
+import com.mongodb.client.result.UpdateResult;
 import hu.bets.model.data.UserBet;
 import org.bson.Document;
 import org.bson.conversions.Bson;
@@ -42,5 +44,16 @@ public class MongoBasedFootballDAO implements FootballDAO {
         documents.forEach((Consumer<Document>) document-> bets.add(new Gson().fromJson(document.toJson(), UserBet.class)));
 
         return bets;
+    }
+
+    @Override
+    public boolean acknowledge(String betId) {
+        BasicDBObject updateQuery = new BasicDBObject();
+        updateQuery.append("$set", new BasicDBObject().append("acknowledged", true));
+
+        BasicDBObject searchQuery = new BasicDBObject("betId", betId);
+
+        UpdateResult result = dataSourceHolder.getCollection().updateOne(searchQuery, updateQuery);
+        return result.wasAcknowledged();
     }
 }

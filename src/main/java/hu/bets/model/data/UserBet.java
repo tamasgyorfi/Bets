@@ -1,7 +1,6 @@
 package hu.bets.model.data;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import hu.bets.service.UuidIdGenerator;
 
 import java.time.LocalDateTime;
 
@@ -20,6 +19,7 @@ public class UserBet {
 
     private LocalDateTime eventReceived;
     private String betId;
+    private boolean acknowledged;
 
     public UserBet(String userId, String competitionId, String matchId, String homeTeamId, String awayTeamId, byte homeTeamGoals, byte awayTeamGoals, String betId) {
         this.userId = userId;
@@ -68,5 +68,9 @@ public class UserBet {
 
     public String getBetId() {
         return betId;
+    }
+
+    public boolean isAcknowledged() {
+        return acknowledged;
     }
 }

@@ -1,11 +1,10 @@
 package hu.bets.config;
 
-import hu.bets.aggregation.BetAggregationExecutor;
+import hu.bets.messaging.execution.MessageExecutor;
 import hu.bets.dbaccess.DataSourceHolder;
 import hu.bets.dbaccess.FootballDAO;
 import hu.bets.dbaccess.MongoBasedFootballDAO;
 import hu.bets.model.data.BetConverter;
-import hu.bets.model.data.UserBet;
 import hu.bets.service.DefaultFootballBetService;
 import hu.bets.service.FootballBetService;
 import hu.bets.service.IdGenerator;
@@ -57,13 +56,13 @@ public class ApplicationConfig {
     }
 
     @Bean
-    public CompletionService<List<List<UserBet>>> completionService() {
+    public CompletionService<List<String>> completionService() {
         Executor executor = Executors.newFixedThreadPool(10);
         return new ExecutorCompletionService<>(executor);
     }
 
     @Bean
-    public BetAggregationExecutor betAggregationExecutor(FootballBetService footballBetService, CompletionService<List<List<UserBet>>> completionService) {
-        return new BetAggregationExecutor(completionService, footballBetService);
+    public MessageExecutor betAggregationExecutor(FootballBetService footballBetService, CompletionService<List<String>> completionService) {
+        return new MessageExecutor(completionService, footballBetService);
     }
 }

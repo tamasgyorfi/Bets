@@ -6,6 +6,7 @@ import hu.bets.model.data.BetConverter;
 import hu.bets.model.data.UserBet;
 import hu.bets.web.model.Bet;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class DefaultFootballBetService implements FootballBetService {
@@ -29,5 +30,18 @@ public class DefaultFootballBetService implements FootballBetService {
     public List<List<UserBet>> getBetsForMatches(List<String> matchIds) {
         List<UserBet> betsForMatches = footballDAO.getBetsForMatches(matchIds);
         return Lists.partition(betsForMatches, BATCH_SIZE);
+    }
+
+    @Override
+    public List<String> acknowledgeAll(List<String> matchIds) {
+        List<String> acknowledgedIds = new ArrayList<>(matchIds.size());
+        for (String matchId: matchIds) {
+            boolean acknowledged = footballDAO.acknowledge(matchId);
+            if (acknowledged) {
+                acknowledgedIds.add(matchId);
+            }
+        }
+
+        return  acknowledgedIds;
     }
 }

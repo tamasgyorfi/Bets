@@ -42,7 +42,7 @@ public class EndpointsIntegrationTest {
     @Test
     public void callingTheInfoEndpointReturnsUpAndRunningResponse() throws Exception {
         String expectedResult = "<html><body><h1>Football-bets service up and running</h1></body></html>";
-        HttpResponse httpResponse = When.iMakeAGetRequest(PROTOCOL + "://" + HOST + ":" + PORT + "/");
+        HttpResponse httpResponse = When.iMakeAGetRequest(PROTOCOL + "://" + HOST + ":" + PORT + INFO_ENDPOINT);
 
         assertEquals(expectedResult, EntityUtils.toString(httpResponse.getEntity()));
     }

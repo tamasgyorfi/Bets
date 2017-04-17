@@ -24,4 +24,11 @@ public interface FootballDAO {
      * @return all user bets related to any of the maches specified in matchIDs
      */
     List<UserBet> getBetsForMatches(List<String> matchIds);
+
+    /**
+     * Acknowledges a previously non-acknowledged game.
+     *
+     * @param betId
+     */
+    boolean acknowledge(String betId);
 }
