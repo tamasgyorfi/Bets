@@ -16,15 +16,14 @@ import java.util.function.Consumer;
 
 public class MongoBasedFootballDAO implements FootballDAO {
 
-    private DataSourceHolder dataSourceHolder;
+    private MongoCollection<Document> collection;
 
-    public MongoBasedFootballDAO(DataSourceHolder dataSourceHolder) {
-        this.dataSourceHolder = dataSourceHolder;
+    public MongoBasedFootballDAO(MongoCollection<Document> collection) {
+        this.collection = collection;
     }
 
     @Override
     public String save(UserBet bet) {
-        MongoCollection collection = dataSourceHolder.getCollection();
 
         Gson gson = new Gson();
         String jsonBet = gson.toJson(bet);
@@ -38,7 +37,7 @@ public class MongoBasedFootballDAO implements FootballDAO {
     public List<UserBet> getBetsForMatches(List<String> matchIds) {
 
         Bson matchIdQuery = Filters.in("matchId", matchIds);
-        FindIterable<Document> documents = dataSourceHolder.getCollection().find(matchIdQuery);
+        FindIterable<Document> documents = collection.find(matchIdQuery);
         List<UserBet> bets = new ArrayList<>();
 
         documents.forEach((Consumer<Document>) document-> bets.add(new Gson().fromJson(document.toJson(), UserBet.class)));
@@ -53,7 +52,7 @@ public class MongoBasedFootballDAO implements FootballDAO {
 
         BasicDBObject searchQuery = new BasicDBObject("betId", betId);
 
-        UpdateResult result = dataSourceHolder.getCollection().updateOne(searchQuery, updateQuery);
+        UpdateResult result = collection.updateOne(searchQuery, updateQuery);
         return result.wasAcknowledged();
     }
 }

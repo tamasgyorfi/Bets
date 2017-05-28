@@ -1,11 +1,12 @@
 package hu.bets;
 
+import hu.bets.common.config.CommonMessagingConfig;
+import hu.bets.common.config.CommonWebConfig;
+import hu.bets.common.messaging.MessageListener;
 import hu.bets.config.ApplicationConfig;
 import hu.bets.config.DatabaseConfig;
 import hu.bets.config.MessagingConfig;
 import hu.bets.config.WebConfig;
-import hu.bets.messaging.receiver.BetAggregationRequestListener;
-import hu.bets.messaging.receiver.MessageListener;
 import org.apache.log4j.Logger;
 import org.eclipse.jetty.server.Server;
 import org.springframework.context.ApplicationContext;
@@ -15,13 +16,16 @@ public class Starter {
 
     private static final Logger LOGGER = Logger.getLogger(Starter.class);
 
-    private ApplicationContext context = new AnnotationConfigApplicationContext(ApplicationConfig.class,
-            MessagingConfig.class, WebConfig.class, DatabaseConfig.class);
+    private ApplicationContext context = new AnnotationConfigApplicationContext(
+            ApplicationConfig.class,
+            MessagingConfig.class,
+            WebConfig.class,
+            DatabaseConfig.class);
 
     public static void main(String[] args) {
         Starter starter = new Starter();
 
-        starter.startMessaging(starter.context.getBean(BetAggregationRequestListener.class));
+        starter.startMessaging(starter.context.getBean(MessageListener.class));
         starter.startServer(starter.context.getBean(Server.class));
     }
 

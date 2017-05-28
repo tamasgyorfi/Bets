@@ -6,7 +6,6 @@ import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.DefaultConsumer;
 import com.rabbitmq.client.Envelope;
-import hu.bets.dbaccess.DataSourceHolder;
 import hu.bets.web.model.BetResponse;
 import integration.steps.util.ApplicationContextHolder;
 import org.bson.Document;
@@ -28,9 +27,7 @@ public class Then {
         assertTrue(betResponse.getError().isEmpty());
     }
 
-    public static void theDatasourceContainsBet(String betId,  DataSourceHolder dataSourceHolder) {
-        MongoCollection<Document> collection = dataSourceHolder.getCollection();
-
+    public static void theDatasourceContainsBet(String betId,  MongoCollection<Document> collection) {
         assertEquals(1, collection.count());
 
         BasicDBObject query = new BasicDBObject();

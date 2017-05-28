@@ -1,10 +1,8 @@
 package integration.requestreply;
 
-import com.google.common.collect.Maps;
 import com.google.gson.Gson;
 import com.mongodb.BasicDBObject;
 import com.mongodb.client.MongoCollection;
-import hu.bets.dbaccess.DataSourceHolder;
 import hu.bets.model.data.BetAggregationResponse;
 import hu.bets.model.data.UserBet;
 import integration.Constants;
@@ -52,7 +50,7 @@ public class MessagingIntegrationTest {
     @Test
     public void acknowledgeMessageShouldMakeDbEntryAcknowledged() throws Exception {
         Given.environmentIsUpAndRunning();
-        MongoCollection<Document> dataSourceHolder = Given.aDataSource().getCollection();
+        MongoCollection<Document> dataSource = Given.aDataSource();
         Map<String, Object> header = new HashMap<>();
         header.put("MESSAGE_TYPE", ACKNOWLEDGE.name());
 
@@ -60,7 +58,7 @@ public class MessagingIntegrationTest {
         When.iSendAMessage("{betIds:[aa]}", header);
 
         TimeUnit.SECONDS.sleep(1);
-        UserBet userBet = new Gson().fromJson(dataSourceHolder.find(new BasicDBObject("betId", "aa")).first().toJson(), UserBet.class);
+        UserBet userBet = new Gson().fromJson(dataSource.find(new BasicDBObject("betId", "aa")).first().toJson(), UserBet.class);
 
         Given.environmentIsShutDown();
         assertTrue(userBet.isAcknowledged());

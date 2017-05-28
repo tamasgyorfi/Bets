@@ -1,7 +1,7 @@
 package integration.addbet;
 
 import com.google.gson.Gson;
-import hu.bets.dbaccess.DataSourceHolder;
+import com.mongodb.client.MongoCollection;
 import hu.bets.web.model.BetResponse;
 import integration.Constants;
 import integration.steps.Given;
@@ -9,6 +9,8 @@ import integration.steps.Then;
 import integration.steps.When;
 import org.apache.http.HttpResponse;
 import org.apache.http.util.EntityUtils;
+import org.apache.log4j.Logger;
+import org.bson.Document;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -17,6 +19,8 @@ import static integration.Constants.*;
 import static org.junit.Assert.assertEquals;
 
 public class EndpointsIntegrationTest {
+
+    private static final Logger LOGGER = Logger.getLogger(EndpointsIntegrationTest.class);
 
     @BeforeClass
     public static void before() throws Exception {
@@ -30,13 +34,13 @@ public class EndpointsIntegrationTest {
 
     @Test
     public void callingTheAddBetWebMethodShouldSaveABetInTheDatabase() throws Exception {
-        DataSourceHolder dataSourceHolder = Given.aDataSource();
+        MongoCollection<Document> collection = Given.aDataSource();
 
         HttpResponse response = When.iMakeAPostRequest(PROTOCOL + "://" + HOST + ":" + PORT + ADD_BET_ENDPOINT, Constants.POST_JSON);
         BetResponse betResponse = convertResponse(response);
 
         Then.theBetResponseIsOk(betResponse);
-        Then.theDatasourceContainsBet(betResponse.getId(), dataSourceHolder);
+        Then.theDatasourceContainsBet(betResponse.getId(), collection);
     }
 
     @Test
@@ -48,7 +52,9 @@ public class EndpointsIntegrationTest {
     }
 
     private BetResponse convertResponse(HttpResponse response) throws Exception {
-        return new Gson().fromJson(EntityUtils.toString(response.getEntity()), BetResponse.class);
+        String entity = EntityUtils.toString(response.getEntity());
+        LOGGER.info("Entity = " + entity);
+        return new Gson().fromJson(entity, BetResponse.class);
     }
 
 }

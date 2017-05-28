@@ -1,8 +1,8 @@
 package integration.steps;
 
+import com.mongodb.client.MongoCollection;
 import com.rabbitmq.client.Channel;
-import hu.bets.dbaccess.DataSourceHolder;
-import hu.bets.messaging.receiver.MessageListener;
+import hu.bets.common.messaging.MessageListener;
 import integration.steps.util.ApplicationContextHolder;
 import org.apache.qpid.server.Broker;
 import org.apache.qpid.server.BrokerOptions;
@@ -22,8 +22,8 @@ public class Given {
     private static Server webServer;
 
 
-    public static DataSourceHolder aDataSource() {
-        return ApplicationContextHolder.getBean(DataSourceHolder.class);
+    public static MongoCollection aDataSource() {
+        return ApplicationContextHolder.getBean(MongoCollection.class);
     }
 
     public static void environmentIsUpAndRunning() throws Exception {
@@ -36,7 +36,7 @@ public class Given {
     }
 
     public static void environmentIsShutDown() throws Exception {
-        ApplicationContextHolder.getBean(DataSourceHolder.class).getCollection().drop();
+        ApplicationContextHolder.getBean(MongoCollection.class).drop();
         ApplicationContextHolder.stopApplicationContext();
 
         BROKER.shutdown();

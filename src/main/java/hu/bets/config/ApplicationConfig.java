@@ -1,7 +1,7 @@
 package hu.bets.config;
 
+import com.mongodb.client.MongoCollection;
 import hu.bets.messaging.execution.MessageExecutor;
-import hu.bets.dbaccess.DataSourceHolder;
 import hu.bets.dbaccess.FootballDAO;
 import hu.bets.dbaccess.MongoBasedFootballDAO;
 import hu.bets.model.data.BetConverter;
@@ -11,6 +11,7 @@ import hu.bets.service.IdGenerator;
 import hu.bets.service.UuidIdGenerator;
 import hu.bets.web.api.FootballBetResource;
 import org.apache.log4j.Logger;
+import org.bson.Document;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -31,8 +32,8 @@ public class ApplicationConfig {
     }
 
     @Bean
-    public FootballDAO footballDAO(DataSourceHolder mongoDataSourceHolder) {
-        return new MongoBasedFootballDAO(mongoDataSourceHolder);
+    public FootballDAO footballDAO(MongoCollection<Document> collection) {
+        return new MongoBasedFootballDAO(collection);
     }
 
     @Bean

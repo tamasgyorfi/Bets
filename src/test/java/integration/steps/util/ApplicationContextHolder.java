@@ -1,5 +1,6 @@
 package integration.steps.util;
 
+import hu.bets.common.config.CommonWebConfig;
 import hu.bets.config.ApplicationConfig;
 import hu.bets.config.MessagingConfig;
 import hu.bets.config.WebConfig;
