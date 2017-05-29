@@ -11,7 +11,6 @@ import hu.bets.web.model.BetResponse;
 import integration.Constants;
 import integration.FakeApplicationConfig;
 import integration.FakeDbConfig;
-import integration.steps.util.ApplicationContextHolder;
 import org.apache.http.HttpResponse;
 import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
