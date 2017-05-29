@@ -52,11 +52,6 @@ public class ApplicationConfig {
     }
 
     @Bean
-    public FootballBetResource footballBetResource() {
-        return new FootballBetResource();
-    }
-
-    @Bean
     public CompletionService<List<String>> completionService() {
         Executor executor = Executors.newFixedThreadPool(10);
         return new ExecutorCompletionService<>(executor);
