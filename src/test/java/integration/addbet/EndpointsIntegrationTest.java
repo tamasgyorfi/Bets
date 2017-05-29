@@ -2,11 +2,16 @@ package integration.addbet;
 
 import com.google.gson.Gson;
 import com.mongodb.client.MongoCollection;
+import hu.bets.config.MessagingConfig;
+import hu.bets.config.WebConfig;
+import hu.bets.steps.Given;
+import hu.bets.steps.Then;
+import hu.bets.steps.When;
 import hu.bets.web.model.BetResponse;
 import integration.Constants;
-import integration.steps.Given;
-import integration.steps.Then;
-import integration.steps.When;
+import integration.FakeApplicationConfig;
+import integration.FakeDbConfig;
+import integration.steps.util.ApplicationContextHolder;
 import org.apache.http.HttpResponse;
 import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
@@ -24,7 +29,10 @@ public class EndpointsIntegrationTest {
 
     @BeforeClass
     public static void before() throws Exception {
-        Given.environmentIsUpAndRunning();
+        Given.environmentIsUpAndRunning(FakeApplicationConfig.class,
+                WebConfig.class,
+                FakeDbConfig.class,
+                MessagingConfig.class);
     }
 
     @AfterClass
@@ -37,10 +45,14 @@ public class EndpointsIntegrationTest {
         MongoCollection<Document> collection = Given.aDataSource();
 
         HttpResponse response = When.iMakeAPostRequest(PROTOCOL + "://" + HOST + ":" + PORT + ADD_BET_ENDPOINT, Constants.POST_JSON);
-        BetResponse betResponse = convertResponse(response);
+        String betResponse = convertResponse(response);
 
         Then.theBetResponseIsOk(betResponse);
-        Then.theDatasourceContainsBet(betResponse.getId(), collection);
+        Then.theDatasourceContainsBet(asBetResponse(betResponse).getId(), collection);
+    }
+
+    private BetResponse asBetResponse(String betResponse) {
+        return new Gson().fromJson(betResponse, BetResponse.class);
     }
 
     @Test
@@ -51,10 +63,10 @@ public class EndpointsIntegrationTest {
         assertEquals(expectedResult, EntityUtils.toString(httpResponse.getEntity()));
     }
 
-    private BetResponse convertResponse(HttpResponse response) throws Exception {
+    private String convertResponse(HttpResponse response) throws Exception {
         String entity = EntityUtils.toString(response.getEntity());
         LOGGER.info("Entity = " + entity);
-        return new Gson().fromJson(entity, BetResponse.class);
+        return entity;
     }
 
 }

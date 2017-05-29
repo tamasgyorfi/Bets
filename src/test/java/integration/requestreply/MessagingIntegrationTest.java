@@ -3,13 +3,19 @@ package integration.requestreply;
 import com.google.gson.Gson;
 import com.mongodb.BasicDBObject;
 import com.mongodb.client.MongoCollection;
+import hu.bets.config.MessagingConfig;
+import hu.bets.config.WebConfig;
 import hu.bets.model.data.BetAggregationResponse;
 import hu.bets.model.data.UserBet;
+import hu.bets.steps.Given;
+import hu.bets.steps.Then;
+import hu.bets.steps.When;
 import integration.Constants;
-import integration.steps.Given;
-import integration.steps.Then;
-import integration.steps.When;
+import integration.FakeApplicationConfig;
+import integration.FakeDbConfig;
 import org.bson.Document;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.util.HashMap;
@@ -26,9 +32,21 @@ import static org.junit.Assert.assertEquals;
 
 public class MessagingIntegrationTest {
 
+    @Before
+    public void setup() throws Exception {
+        Given.environmentIsUpAndRunning(FakeApplicationConfig.class,
+                WebConfig.class,
+                FakeDbConfig.class,
+                MessagingConfig.class);
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        Given.environmentIsShutDown();
+    }
+
     @Test
     public void aggregationMessageShouldTriggerAgrregationReply() throws Exception {
-        Given.environmentIsUpAndRunning();
         Map<String, Object> header = new HashMap<>();
         header.put("MESSAGE_TYPE", AGGREGATION_REQUEST.name());
 
@@ -49,7 +67,6 @@ public class MessagingIntegrationTest {
 
     @Test
     public void acknowledgeMessageShouldMakeDbEntryAcknowledged() throws Exception {
-        Given.environmentIsUpAndRunning();
         MongoCollection<Document> dataSource = Given.aDataSource();
         Map<String, Object> header = new HashMap<>();
         header.put("MESSAGE_TYPE", ACKNOWLEDGE.name());

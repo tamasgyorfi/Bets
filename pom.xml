@@ -119,6 +119,12 @@
         <!-- TESTING -->
 
         <dependency>
+            <groupId>hu.bets</groupId>
+            <artifactId>football-integration-test</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.12</version>
@@ -137,12 +143,6 @@
             <artifactId>httpclient</artifactId>
             <version>4.5.3</version>
             <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.qpid</groupId>
-            <artifactId>qpid-broker</artifactId>
-            <version>6.0.2</version>
         </dependency>
 
     </dependencies>
