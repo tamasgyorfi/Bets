@@ -106,6 +106,11 @@ under the License.
 
  
    <servers>  
+		<server>
+                <id>bintray-tamasgyorfi-maven</id>
+                <username>tamasgyorfi</username>
+                <password>fca07bf30ca074c3ece74feeca3b71be79d15c57</password>
+		</server>
    </servers>
 
    <!-- mirrors
@@ -134,6 +139,34 @@ under the License.
      -->
   </mirrors>
 
+  <profiles>
+        <profile>
+            <repositories>
+                <repository>
+                    <snapshots>
+                        <enabled>false</enabled>
+                    </snapshots>
+                    <id>bintray-tamasgyorfi-maven</id>
+                    <name>bintray</name>
+                    <url>http://dl.bintray.com/tamasgyorfi/maven</url>
+                </repository>
+            </repositories>
+            <pluginRepositories>
+                <pluginRepository>
+                    <snapshots>
+                        <enabled>false</enabled>
+                    </snapshots>
+                    <id>bintray-tamasgyorfi-maven</id>
+                    <name>bintray-plugins</name>
+                    <url>http://dl.bintray.com/tamasgyorfi/maven</url>
+                </pluginRepository>
+            </pluginRepositories>
+            <id>bintray</id>
+        </profile>
+    </profiles>
+    <activeProfiles>
+        <activeProfile>bintray</activeProfile>
+    </activeProfiles>
   <!-- profiles
    | This is a list of profiles which can be activated in a variety of ways, and which can modify
    | the build process. Profiles provided in the settings.xml are intended to provide local machine-
@@ -155,19 +188,4 @@ under the License.
    |       variables for plugins in the POM.
    |
    |-->
-    <profiles>
-        <profile>
-            <id>myMavenRepo</id>
-            <activation>
-                <property>
-                    <name>!doNotUseMyMavenRepo</name>
-                </property>
-            </activation>
-            <properties>
-                <myMavenRepo.read.url>https://mymavenrepo.com/repo/bYNMGsvgRpEfAUhHs8GR/</myMavenRepo.read.url>
-                <myMavenRepo.write.url>https://mymavenrepo.com/repo/yiPdFrDyuJXW7oFG7nDK/</myMavenRepo.write.url>
-            </properties>
-        </profile>
-    </profiles>
-  
 </settings>

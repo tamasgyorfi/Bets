@@ -29,7 +29,7 @@
         <dependency>
             <groupId>hu.bets</groupId>
             <artifactId>common-infrastructure</artifactId>
-            <version>1.0.1</version>
+            <version>1.0.3</version>
         </dependency>
 
         <dependency>
@@ -91,7 +91,7 @@
         <dependency>
             <groupId>hu.bets</groupId>
             <artifactId>football-integration-test</artifactId>
-            <version>0.0.2</version>
+            <version>0.0.4</version>
         </dependency>
 
         <dependency>
@@ -189,20 +189,10 @@
 
     <distributionManagement>
         <repository>
-            <id>myMavenRepo.write</id>
-            <url>${myMavenRepo.write.url}</url>
+            <id>bintray-tamasgyorfi-maven</id>
+            <name>tamasgyorfi-maven</name>
+            <url>https://api.bintray.com/maven/tamasgyorfi/maven/Bets/;publish=1</url>
         </repository>
-        <snapshotRepository>
-            <id>myMavenRepo.write</id>
-            <url>${myMavenRepo.write.url}</url>
-        </snapshotRepository>
     </distributionManagement>
-
-    <repositories>
-        <repository>
-            <id>myMavenRepo.read</id>
-            <url>${myMavenRepo.read.url}</url>
-        </repository>
-    </repositories>
 
 </project>
