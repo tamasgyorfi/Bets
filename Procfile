@@ -1,1 +1,1 @@
-web: java $JAVA_OPTS -javaagent:/app/newrelic/newrelic.jar -cp target/football-bets.jar hu.bets.Starter
+web: java $JAVA_OPTS -cp target/football-bets.jar hu.bets.Starter
