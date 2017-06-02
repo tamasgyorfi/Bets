@@ -18,6 +18,7 @@ import org.bson.Document;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import java.util.concurrent.TimeUnit;
 
 import static integration.Constants.*;
 import static org.junit.Assert.assertEquals;
@@ -32,6 +33,7 @@ public class EndpointsIntegrationTest {
                 WebConfig.class,
                 FakeDbConfig.class,
                 MessagingConfig.class);
+        TimeUnit.SECONDS.sleep(2);
     }
 
     @AfterClass
