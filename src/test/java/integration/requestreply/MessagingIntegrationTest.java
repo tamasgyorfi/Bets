@@ -38,6 +38,7 @@ public class MessagingIntegrationTest {
                 WebConfig.class,
                 FakeDbConfig.class,
                 MessagingConfig.class);
+        TimeUnit.SECONDS.sleep(2);
     }
 
     @After
