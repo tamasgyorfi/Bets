@@ -20,7 +20,7 @@ public class DatabaseConfig {
     }
 
     @Bean
-    public MongoCollection<Document> scoresCollection(MongoDatabase mongoDatabase) {
-        return mongoDatabase.getCollection("heroku_k3d7xpgj");
+    public MongoCollection<Document> betsCollection(MongoDatabase mongoDatabase) {
+        return mongoDatabase.getCollection("Bets");
     }
 }
