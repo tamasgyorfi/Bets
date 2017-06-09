@@ -6,10 +6,9 @@ import hu.bets.common.config.CommonMessagingConfig;
 import hu.bets.common.messaging.DefaultMessageListener;
 import hu.bets.common.messaging.MessageListener;
 import hu.bets.messaging.execution.MessageExecutor;
-import hu.bets.messaging.MessagingConstants;
 import hu.bets.messaging.receiver.MessageConsumer;
 import hu.bets.messaging.sender.MessageSender;
-import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -17,26 +16,30 @@ import org.springframework.context.annotation.Import;
 import java.util.List;
 import java.util.concurrent.CompletionService;
 
-import static hu.bets.messaging.MessagingConstants.AGGREGATE_REQUEST_QUEUE_NAME;
-import static hu.bets.messaging.MessagingConstants.AGGREGATE_REQUEST_ROUTING_KEY;
-import static hu.bets.messaging.MessagingConstants.EXCHANGE_NAME;
+import static hu.bets.messaging.MessagingConstants.*;
 
 @Configuration
 @Import(CommonMessagingConfig.class)
 public class MessagingConfig {
 
+    @Autowired
+    private Channel senderChannel;
+
+    @Autowired
+    private Channel receiverChannel;
+
     @Bean
-    public MessageListener messageListener(Channel channel, Consumer consumer) {
-        return new DefaultMessageListener(channel, consumer, AGGREGATE_REQUEST_QUEUE_NAME, EXCHANGE_NAME, AGGREGATE_REQUEST_ROUTING_KEY);
+    public MessageListener messageListener(Consumer consumer) {
+        return new DefaultMessageListener(receiverChannel, consumer, SCORES_TO_BETS_QUEUE, EXCHANGE_NAME, SCORES_TO_BETS_ROUTE);
     }
 
     @Bean
-    public Consumer consumer(Channel channel, MessageExecutor executor) {
-        return new MessageConsumer(channel, executor);
+    public Consumer consumer(MessageExecutor executor) {
+        return new MessageConsumer(receiverChannel, executor);
     }
 
     @Bean(initMethod = "start", destroyMethod = "stop")
-    public MessageSender betAggregateResultSender(CompletionService<List<String>> completionService, Channel channel) {
-        return new MessageSender(completionService, channel);
+    public MessageSender betAggregateResultSender(CompletionService<List<String>> completionService) {
+        return new MessageSender(completionService, senderChannel);
     }
 }

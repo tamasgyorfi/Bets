@@ -50,13 +50,14 @@ public class MessageSender {
     private void send(List<String> payloadBatch) {
         for (String payload : payloadBatch) {
             sendBatch(payload);
+            LOGGER.info("Batch sent: " + payload);
         }
     }
 
     private void sendBatch(String payload) {
         for (int i = 0; i < NR_OF_RETRIES; i++) {
             try {
-                channel.basicPublish(MessagingConstants.EXCHANGE_NAME, MessagingConstants.AGGREGATE_RESPONSE_ROUTING_KEY, null, payload.getBytes());
+                channel.basicPublish(MessagingConstants.EXCHANGE_NAME, MessagingConstants.BETS_TO_SCORES_ROUTE, null, payload.getBytes());
                 break;
             } catch (IOException e) {
                 LOGGER.error("Unable to send batch: " + payload, e);

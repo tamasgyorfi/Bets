@@ -5,12 +5,14 @@ import hu.bets.dbaccess.FootballDAO;
 import hu.bets.model.data.BetConverter;
 import hu.bets.model.data.UserBet;
 import hu.bets.web.model.Bet;
+import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class DefaultFootballBetService implements FootballBetService {
 
+    private static final Logger LOGGER = Logger.getLogger(DefaultFootballBetService.class);
     private static final int BATCH_SIZE = 100;
 
     private final FootballDAO footballDAO;
@@ -29,6 +31,7 @@ public class DefaultFootballBetService implements FootballBetService {
     @Override
     public List<List<UserBet>> getBetsForMatches(List<String> matchIds) {
         List<UserBet> betsForMatches = footballDAO.getBetsForMatches(matchIds);
+        LOGGER.info("Bets for "+matchIds+" : "+ betsForMatches);
         return Lists.partition(betsForMatches, BATCH_SIZE);
     }
 

@@ -25,7 +25,7 @@ import java.util.concurrent.TimeUnit;
 
 import static hu.bets.messaging.MessageType.ACKNOWLEDGE;
 import static hu.bets.messaging.MessageType.AGGREGATION_REQUEST;
-import static hu.bets.messaging.MessagingConstants.AGGREGATE_REPLY_QUEUE_NAME;
+import static hu.bets.messaging.MessagingConstants.*;
 import static integration.Constants.*;
 import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertEquals;
@@ -52,9 +52,9 @@ public class MessagingIntegrationTest {
         header.put("MESSAGE_TYPE", AGGREGATION_REQUEST.name());
 
         When.iRepeateAPostRequest(PROTOCOL + "://" + HOST + ":" + PORT + ADD_BET_ENDPOINT, Constants.POST_JSON, 101);
-        When.iSendAMessage("{matchIds:[aa]}", header);
+        When.iSendAMessage("{matchIds:[aa]}", header, SCORES_TO_BETS_QUEUE, SCORES_TO_BETS_ROUTE);
 
-        List<byte[]> messages = Then.iExpectOutgoingMessages(AGGREGATE_REPLY_QUEUE_NAME, 1);
+        List<byte[]> messages = Then.iExpectOutgoingMessages(BETS_TO_SCORES_QUEUE, BETS_TO_SCORES_ROUTE, 2);
 
         assertEquals(2, messages.size());
         BetAggregationResponse message1 = new Gson().fromJson(new String(messages.get(0)), BetAggregationResponse.class);
@@ -73,7 +73,7 @@ public class MessagingIntegrationTest {
         header.put("MESSAGE_TYPE", ACKNOWLEDGE.name());
 
         When.iMakeAPostRequest(PROTOCOL + "://" + HOST + ":" + PORT + ADD_BET_ENDPOINT, Constants.POST_JSON);
-        When.iSendAMessage("{betIds:[aa]}", header);
+        When.iSendAMessage("{betIds:[aa]}", header, BETS_TO_SCORES_QUEUE, SCORES_TO_BETS_ROUTE);
 
         TimeUnit.SECONDS.sleep(1);
         UserBet userBet = new Gson().fromJson(dataSource.find(new BasicDBObject("betId", "aa")).first().toJson(), UserBet.class);
