@@ -1,5 +1,6 @@
 package hu.bets.messaging.execution;
 
+import hu.bets.common.util.HashGenerator;
 import hu.bets.messaging.MessageType;
 import hu.bets.service.FootballBetService;
 import org.apache.log4j.Logger;
@@ -13,10 +14,12 @@ public class MessageExecutor {
 
     protected CompletionService<List<String>> executorService;
     private FootballBetService footballBetService;
+    private HashGenerator hashGenerator;
 
-    public MessageExecutor(CompletionService<List<String>> executorService, FootballBetService footballBetService) {
+    public MessageExecutor(CompletionService<List<String>> executorService, FootballBetService footballBetService, HashGenerator hashGenerator) {
         this.executorService = executorService;
         this.footballBetService = footballBetService;
+        this.hashGenerator = hashGenerator;
     }
 
     public void submit(String message, MessageType messageType) {
@@ -31,7 +34,7 @@ public class MessageExecutor {
             }
             case AGGREGATION_REQUEST: {
                 LOGGER.info("Aggregation request message received: " + message);
-                executorService.submit(new BetAggregationTask(footballBetService, message));
+                executorService.submit(new BetAggregationTask(footballBetService, hashGenerator, message));
                 break;
             }
         }
