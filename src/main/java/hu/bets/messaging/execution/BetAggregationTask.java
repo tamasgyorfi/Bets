@@ -1,7 +1,7 @@
 package hu.bets.messaging.execution;
 
 import com.google.gson.Gson;
-import hu.bets.common.util.HashGenerator;
+import hu.bets.common.util.hash.HashGenerator;
 import hu.bets.model.data.BetAggregationResponse;
 import hu.bets.model.data.Request;
 import hu.bets.model.data.UserBet;

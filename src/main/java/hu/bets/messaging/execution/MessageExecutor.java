@@ -1,6 +1,6 @@
 package hu.bets.messaging.execution;
 
-import hu.bets.common.util.HashGenerator;
+import hu.bets.common.util.hash.HashGenerator;
 import hu.bets.model.data.Request;
 import hu.bets.service.FootballBetService;
 import org.apache.log4j.Logger;
