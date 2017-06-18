@@ -2,8 +2,8 @@ package hu.bets.messaging.execution;
 
 import com.google.gson.Gson;
 import hu.bets.common.util.HashGenerator;
-import hu.bets.model.data.BetAggregationRequest;
 import hu.bets.model.data.BetAggregationResponse;
+import hu.bets.model.data.Request;
 import hu.bets.model.data.UserBet;
 import hu.bets.service.FootballBetService;
 import org.apache.log4j.Logger;
@@ -17,21 +17,20 @@ public class BetAggregationTask extends Task<List<List<UserBet>>> {
 
     private FootballBetService footballBetService;
     private HashGenerator hashGenerator;
-    private String message;
+    private Request request;
 
-    public BetAggregationTask(FootballBetService footballBetService, HashGenerator hashGenerator, String message) {
+    public BetAggregationTask(FootballBetService footballBetService, HashGenerator hashGenerator, Request request) {
         this.footballBetService = footballBetService;
         this.hashGenerator = hashGenerator;
-        this.message = message;
+        this.request = request;
     }
 
     @Override
     public List<List<UserBet>> doWork() {
         Gson gson = new Gson();
 
-        BetAggregationRequest betAggregationRequest = gson.fromJson(message, BetAggregationRequest.class);
-
-        return footballBetService.getBetsForMatches(betAggregationRequest.getMatchIds());
+        LOGGER.info("Incoming request is: " + request);
+        return footballBetService.getBetsForMatches(request.getPayload());
     }
 
     @Override
@@ -42,6 +41,7 @@ public class BetAggregationTask extends Task<List<List<UserBet>>> {
             payload.add(new Gson().toJson(response));
         }
 
+        LOGGER.info("Returning converted payload: " + payload);
         return payload;
     }
 }

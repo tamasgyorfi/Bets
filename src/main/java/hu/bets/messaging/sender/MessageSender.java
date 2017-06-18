@@ -7,7 +7,6 @@ import org.apache.log4j.Logger;
 import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.CompletionService;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 public class MessageSender {
@@ -32,7 +31,10 @@ public class MessageSender {
                 if (result != null) {
                     send(result.get());
                 }
-            } catch (InterruptedException | ExecutionException e) {
+            } catch (InterruptedException e) {
+                LOGGER.info("Message listener thread shutting down.");
+                shouldContinue = false;
+            } catch (Exception e) {
                 LOGGER.error("Unable to send User Bets.", e);
             }
         }

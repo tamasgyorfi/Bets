@@ -1,7 +1,6 @@
 package hu.bets.messaging.execution;
 
-import com.google.gson.Gson;
-import hu.bets.model.data.BetAcknowledgedRequest;
+import hu.bets.model.data.Request;
 import hu.bets.service.FootballBetService;
 import org.apache.log4j.Logger;
 
@@ -13,16 +12,16 @@ public class AcknowledgeTask extends Task<Void> {
     private static final Logger LOGGER = Logger.getLogger(AcknowledgeTask.class);
 
     private FootballBetService footballBetService;
-    private String message;
+    private Request request;
 
-    public AcknowledgeTask(FootballBetService footballBetService, String message) {
+    public AcknowledgeTask(FootballBetService footballBetService, Request request) {
         this.footballBetService = footballBetService;
-        this.message = message;
+        this.request = request;
     }
 
     @Override
     public Void doWork() {
-        List<String> betIds = new Gson().fromJson(message, BetAcknowledgedRequest.class).getBetIds();
+        List<String> betIds = request.getPayload();
         List<String> acknowledgedIds = footballBetService.acknowledgeAll(betIds);
 
         if (betIds.size() != acknowledgedIds.size()) {

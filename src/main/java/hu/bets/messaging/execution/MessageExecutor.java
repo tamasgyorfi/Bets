@@ -1,7 +1,7 @@
 package hu.bets.messaging.execution;
 
 import hu.bets.common.util.HashGenerator;
-import hu.bets.messaging.MessageType;
+import hu.bets.model.data.Request;
 import hu.bets.service.FootballBetService;
 import org.apache.log4j.Logger;
 
@@ -22,21 +22,21 @@ public class MessageExecutor {
         this.hashGenerator = hashGenerator;
     }
 
-    public void submit(String message, MessageType messageType) {
-        switch (messageType) {
-            case UNKNOWN:
-                LOGGER.info("Unknown message received: " + message);
+    public void submit(Request request) {
+        switch (request.getType()) {
+            case ACKNOWLEDGE_REQUEST: {
+                LOGGER.info("Acknowledge message received: " + request);
+                executorService.submit(new AcknowledgeTask(footballBetService, request));
+                break;
+            }
+            case BETS_REQUEST: {
+                LOGGER.info("Aggregation request message received: " + request);
+                executorService.submit(new BetAggregationTask(footballBetService, hashGenerator, request));
+                break;
+            }
+            default:
+                LOGGER.info("Unknown message received: " + request);
                 return;
-            case ACKNOWLEDGE: {
-                LOGGER.info("Acknowledge message received: " + message);
-                executorService.submit(new AcknowledgeTask(footballBetService, message));
-                break;
-            }
-            case AGGREGATION_REQUEST: {
-                LOGGER.info("Aggregation request message received: " + message);
-                executorService.submit(new BetAggregationTask(footballBetService, hashGenerator, message));
-                break;
-            }
         }
     }
 }
