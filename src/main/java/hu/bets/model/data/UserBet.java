@@ -73,4 +73,20 @@ public class UserBet {
     public boolean isAcknowledged() {
         return acknowledged;
     }
+
+    @Override
+    public String toString() {
+        return "UserBet{" +
+                "userId='" + userId + '\'' +
+                ", competitionId='" + competitionId + '\'' +
+                ", matchId='" + matchId + '\'' +
+                ", homeTeamId='" + homeTeamId + '\'' +
+                ", awayTeamId='" + awayTeamId + '\'' +
+                ", homeTeamGoals=" + homeTeamGoals +
+                ", awayTeamGoals=" + awayTeamGoals +
+                ", eventReceived=" + eventReceived +
+                ", betId='" + betId + '\'' +
+                ", acknowledged=" + acknowledged +
+                '}';
+    }
 }

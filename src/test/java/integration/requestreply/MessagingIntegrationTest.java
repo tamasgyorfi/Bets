@@ -38,6 +38,8 @@ public class MessagingIntegrationTest {
                 FakeDbConfig.class,
                 MessagingConfig.class);
         TimeUnit.SECONDS.sleep(2);
+
+        Given.aDataSource().drop();
     }
 
     @After
@@ -46,12 +48,10 @@ public class MessagingIntegrationTest {
     }
 
     @Test
-    public void aggregationMessageShouldTriggerAgrregationReply() throws Exception {
-        Map<String, Object> header = new HashMap<>();
-        header.put("MESSAGE_TYPE", AGGREGATION_REQUEST.name());
+    public void aggregationMessageShouldTriggerAggregationReply() throws Exception {
 
         When.iRepeateAPostRequest(PROTOCOL + "://" + HOST + ":" + PORT + ADD_BET_ENDPOINT, Constants.POST_JSON, 101);
-        When.iSendAMessage("{\"payload\":[\"aa\"],\"type\":\"BETS_REQUEST\"}", header, SCORES_TO_BETS_QUEUE, SCORES_TO_BETS_ROUTE);
+        When.iSendAMessage("{\"payload\":[\"aa\"],\"type\":\"BETS_REQUEST\"}", null, SCORES_TO_BETS_QUEUE, SCORES_TO_BETS_ROUTE);
 
         List<byte[]> messages = Then.iExpectOutgoingMessages(BETS_TO_SCORES_QUEUE, BETS_TO_SCORES_ROUTE, 2);
 
@@ -61,8 +61,6 @@ public class MessagingIntegrationTest {
 
         assertEquals(100, message1.getNumberOfElements());
         assertEquals(1, message2.getNumberOfElements());
-
-        Given.environmentIsShutDown();
     }
 
     @Test
@@ -75,7 +73,6 @@ public class MessagingIntegrationTest {
         TimeUnit.SECONDS.sleep(1);
         UserBet userBet = new Gson().fromJson(dataSource.find(new BasicDBObject("betId", "aa")).first().toJson(), UserBet.class);
 
-        Given.environmentIsShutDown();
         assertTrue(userBet.isAcknowledged());
     }
 }
