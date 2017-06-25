@@ -1,6 +1,6 @@
 package hu.bets.model.data;
 
-import hu.bets.service.IdGenerator;
+import hu.bets.common.util.IdGenerator;
 import hu.bets.web.model.Bet;
 
 public class BetConverter {

@@ -1,6 +1,8 @@
 package hu.bets.config;
 
 import com.mongodb.client.MongoCollection;
+import hu.bets.common.util.IdGenerator;
+import hu.bets.common.util.UuidIdGenerator;
 import hu.bets.common.util.hash.MD5HashGenerator;
 import hu.bets.dbaccess.FootballDAO;
 import hu.bets.dbaccess.MongoBasedFootballDAO;
@@ -8,8 +10,6 @@ import hu.bets.messaging.execution.MessageExecutor;
 import hu.bets.model.data.BetConverter;
 import hu.bets.service.DefaultFootballBetService;
 import hu.bets.service.FootballBetService;
-import hu.bets.service.IdGenerator;
-import hu.bets.service.UuidIdGenerator;
 import org.apache.log4j.Logger;
 import org.bson.Document;
 import org.springframework.context.annotation.Bean;
