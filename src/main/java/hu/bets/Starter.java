@@ -1,8 +1,8 @@
 package hu.bets;
 
-import hu.bets.common.config.CommonMessagingConfig;
-import hu.bets.common.config.CommonWebConfig;
 import hu.bets.common.messaging.MessageListener;
+import hu.bets.common.services.Services;
+import hu.bets.common.util.servicediscovery.EurekaFacade;
 import hu.bets.config.ApplicationConfig;
 import hu.bets.config.DatabaseConfig;
 import hu.bets.config.MessagingConfig;
@@ -25,8 +25,13 @@ public class Starter {
     public static void main(String[] args) {
         Starter starter = new Starter();
 
+        starter.registerForDiscovery(starter.context.getBean(EurekaFacade.class));
         starter.startMessaging(starter.context.getBean(MessageListener.class));
         starter.startServer(starter.context.getBean(Server.class));
+    }
+
+    private void registerForDiscovery(EurekaFacade eurekaFacade) {
+        eurekaFacade.registerNonBlockingly(Services.BETS.getServiceName());
     }
 
     private void startMessaging(MessageListener messageListener) {

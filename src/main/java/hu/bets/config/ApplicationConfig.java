@@ -5,6 +5,8 @@ import hu.bets.common.util.IdGenerator;
 import hu.bets.common.util.UuidIdGenerator;
 import hu.bets.common.util.hash.MD5HashGenerator;
 import hu.bets.common.util.schema.SchemaValidator;
+import hu.bets.common.util.servicediscovery.DefaultEurekaFacade;
+import hu.bets.common.util.servicediscovery.EurekaFacade;
 import hu.bets.dbaccess.FootballDAO;
 import hu.bets.dbaccess.MongoBasedFootballDAO;
 import hu.bets.messaging.execution.MessageExecutor;
@@ -66,5 +68,10 @@ public class ApplicationConfig {
     @Bean
     public SchemaValidator schemaValidator() {
         return new SchemaValidator();
+    }
+
+    @Bean
+    public EurekaFacade eurekaFacade() {
+        return new DefaultEurekaFacade();
     }
 }
