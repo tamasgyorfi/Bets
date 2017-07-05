@@ -1,0 +1,67 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "additionalProperties": false,
+  "definitions": {},
+  "id": "http://example.com/example.json",
+  "properties": {
+    "awayTeamGoals": {
+      "id": "/properties/awayTeamGoals",
+      "maximum": 50,
+      "minimum": 0,
+      "type": "integer"
+    },
+    "awayTeamId": {
+      "id": "/properties/awayTeamId",
+      "maxLength": 32,
+      "minLength": 1,
+      "type": "string"
+    },
+    "competitionId": {
+      "id": "/properties/competitionId",
+      "maxLength": 32,
+      "minLength": 1,
+      "type": "string"
+    },
+    "homeTeamGoals": {
+      "id": "/properties/homeTeamGoals",
+      "maximum": 50,
+      "minimum": 0,
+      "type": "integer"
+    },
+    "homeTeamId": {
+      "id": "/properties/homeTeamId",
+      "maxLength": 32,
+      "minLength": 1,
+      "type": "string"
+    },
+    "matchId": {
+      "id": "/properties/matchId",
+      "maxLength": 32,
+      "minLength": 1,
+      "type": "string"
+    },
+    "token": {
+      "id": "/properties/token",
+      "maxLength": 32,
+      "minLength": 1,
+      "type": "string"
+    },
+    "userId": {
+      "id": "/properties/userId",
+      "maxLength": 32,
+      "minLength": 1,
+      "type": "string"
+    }
+  },
+  "required": [
+    "homeTeamId",
+    "awayTeamId",
+    "matchId",
+    "userId",
+    "token",
+    "homeTeamGoals",
+    "awayTeamGoals",
+    "competitionId"
+  ],
+  "type": "object"
+}

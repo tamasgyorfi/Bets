@@ -29,7 +29,7 @@
         <dependency>
             <groupId>hu.bets</groupId>
             <artifactId>common-infrastructure</artifactId>
-            <version>1.0.9</version>
+            <version>1.0.12</version>
         </dependency>
 
         <dependency>
@@ -91,7 +91,7 @@
         <dependency>
             <groupId>hu.bets</groupId>
             <artifactId>football-integration-test</artifactId>
-            <version>0.0.6</version>
+            <version>0.0.7</version>
             <scope>test</scope>
         </dependency>
 

@@ -12,7 +12,9 @@ public class Bet {
     private final byte homeTeamGoals;
     private final byte awayTeamGoals;
 
-    public Bet(String userId, String competitionId, String matchId, String homeTeamId, String awayTeamId, byte homeTeamGoals, byte awayTeamGoals) {
+    private final String token;
+
+    public Bet(String userId, String competitionId, String matchId, String homeTeamId, String awayTeamId, byte homeTeamGoals, byte awayTeamGoals, String token) {
         this.userId = userId;
         this.competitionId = competitionId;
         this.matchId = matchId;
@@ -20,6 +22,7 @@ public class Bet {
         this.awayTeamId = awayTeamId;
         this.homeTeamGoals = homeTeamGoals;
         this.awayTeamGoals = awayTeamGoals;
+        this.token = token;
     }
 
     private Bet() {
@@ -30,6 +33,7 @@ public class Bet {
         this.awayTeamId = "";
         this.homeTeamGoals = -1;
         this.awayTeamGoals = -1;
+        this.token = "";
     }
 
     public String getUserId() {

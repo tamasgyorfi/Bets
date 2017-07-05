@@ -11,6 +11,7 @@ import hu.bets.web.model.BetResponse;
 import integration.Constants;
 import integration.FakeApplicationConfig;
 import integration.FakeDbConfig;
+import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
@@ -22,6 +23,7 @@ import java.util.concurrent.TimeUnit;
 
 import static integration.Constants.*;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class EndpointsIntegrationTest {
 
@@ -50,6 +52,15 @@ public class EndpointsIntegrationTest {
 
         Then.theBetResponseIsOk(betResponse);
         Then.theDatasourceContainsBet(asBetResponse(betResponse).getId(), collection);
+    }
+
+    @Test
+    public void callingTheAddBetWebMethodShouldFailWhenSchemaIsInvalid() throws Exception {
+        MongoCollection<Document> collection = Given.aDataSource();
+
+        HttpResponse response = When.iMakeAPostRequest(PROTOCOL + "://" + HOST + ":" + PORT + ADD_BET_ENDPOINT, Constants.INVALID_POST_JSON);
+
+        assertTrue(EntityUtils.toString(response.getEntity()).contains("required key [token] not found") );
     }
 
     private BetResponse asBetResponse(String betResponse) {

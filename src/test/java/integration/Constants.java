@@ -9,7 +9,8 @@ public class Constants {
             "   \"homeTeamId\":\"aa\",\n" +
             "   \"awayTeamId\":\"aa\",\n" +
             "   \"homeTeamGoals\":1,\n" +
-            "   \"awayTeamGoals\":0\n" +
+            "   \"awayTeamGoals\":0,\n" +
+            "   \"token\": \"securityToken\"\n" +
             "}";
 
     public static final String HOST = "localhost";
@@ -20,4 +21,13 @@ public class Constants {
 
     public static final String PROTOCOL = "http";
 
+    public static final String INVALID_POST_JSON = "{  \n" +
+            "   \"userId\":\"aa\",\n" +
+            "   \"competitionId\":\"aa\",\n" +
+            "   \"matchId\":\"aa\",\n" +
+            "   \"homeTeamId\":\"aa\",\n" +
+            "   \"awayTeamId\":\"aa\",\n" +
+            "   \"homeTeamGoals\":1,\n" +
+            "   \"awayTeamGoals\":0\n" +
+            "}";
 }

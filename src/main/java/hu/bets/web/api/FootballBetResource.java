@@ -1,5 +1,8 @@
 package hu.bets.web.api;
 
+import com.google.gson.Gson;
+import hu.bets.common.util.schema.InvalidScemaException;
+import hu.bets.common.util.schema.SchemaValidator;
 import hu.bets.service.BetSaveException;
 import hu.bets.service.FootballBetService;
 import hu.bets.web.model.Bet;
@@ -15,10 +18,13 @@ import javax.ws.rs.core.MediaType;
 @Path("/bets/football/v1")
 public class FootballBetResource {
 
+    private static final Gson GSON = new Gson();
     private static final Logger LOGGER = Logger.getLogger(FootballBetResource.class);
 
     @Autowired
     private FootballBetService footballBetService;
+    @Autowired
+    private SchemaValidator schemaValidator;
 
     @GET
     @Path("info")
@@ -31,15 +37,21 @@ public class FootballBetResource {
     @Path("bet")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public BetResponse postFootballResult(Bet bet) {
+    public String postFootballResult(String input) {
 
-        LOGGER.info("Request received: " + bet);
-
+        LOGGER.info("Request received: " + input);
         try {
+            Bet bet = validateAndParse(input);
             String id = footballBetService.saveBet(bet);
-            return BetResponse.success(id);
-        } catch (BetSaveException e) {
-            return BetResponse.failure(e.getMessage());
+            return GSON.toJson(BetResponse.success(id));
+        } catch (BetSaveException | InvalidScemaException e) {
+            return GSON.toJson(BetResponse.failure(e.getMessage()));
         }
+    }
+
+    private Bet validateAndParse(String input) {
+        LOGGER.info("Validating incoming payload.");
+        schemaValidator.validatePayload(input, "bet.request.schema.json");
+        return GSON.fromJson(input, Bet.class);
     }
 }
