@@ -27,8 +27,14 @@ public class Starter {
         Starter starter = new Starter();
 
         starter.registerForDiscovery(starter.context.getBean(EurekaFacade.class));
+        addShutDownHook(starter.context);
+
         starter.startMessaging(starter.context.getBean(MessageListener.class));
         starter.startServer(starter.context.getBean(Server.class));
+    }
+
+    private static void addShutDownHook(ApplicationContext context) {
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> context.getBean(EurekaFacade.class).unregister()));
     }
 
     private void registerForDiscovery(EurekaFacade eurekaFacade) {

@@ -38,6 +38,11 @@ public class FakeApplicationConfig extends ApplicationConfig {
             public String resolveEndpoint(String name) {
                 return "";
             }
+
+            @Override
+            public void unregister() {
+
+            }
         };
     }
 }
