@@ -6,14 +6,15 @@ import hu.bets.model.data.BetAggregationResponse;
 import hu.bets.model.data.Request;
 import hu.bets.model.data.UserBet;
 import hu.bets.service.FootballBetService;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class BetAggregationTask extends Task<List<List<UserBet>>> {
 
-    private static final Logger LOGGER = Logger.getLogger(BetAggregationTask.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(BetAggregationTask.class);
 
     private FootballBetService footballBetService;
     private HashGenerator hashGenerator;

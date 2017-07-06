@@ -7,7 +7,8 @@ import hu.bets.service.BetSaveException;
 import hu.bets.service.FootballBetService;
 import hu.bets.web.model.Bet;
 import hu.bets.web.model.BetResponse;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -19,7 +20,7 @@ import javax.ws.rs.core.MediaType;
 public class FootballBetResource {
 
     private static final Gson GSON = new Gson();
-    private static final Logger LOGGER = Logger.getLogger(FootballBetResource.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(FootballBetResource.class);
 
     @Autowired
     private FootballBetService footballBetService;

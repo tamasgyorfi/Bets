@@ -5,14 +5,15 @@ import hu.bets.dbaccess.FootballDAO;
 import hu.bets.model.data.BetConverter;
 import hu.bets.model.data.UserBet;
 import hu.bets.web.model.Bet;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class DefaultFootballBetService implements FootballBetService {
 
-    private static final Logger LOGGER = Logger.getLogger(DefaultFootballBetService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DefaultFootballBetService.class);
     private static final int BATCH_SIZE = 100;
 
     private final FootballDAO footballDAO;

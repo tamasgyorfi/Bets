@@ -11,14 +11,15 @@ import hu.bets.web.model.BetResponse;
 import integration.Constants;
 import integration.FakeApplicationConfig;
 import integration.FakeDbConfig;
-import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.util.EntityUtils;
-import org.apache.log4j.Logger;
 import org.bson.Document;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.concurrent.TimeUnit;
 
 import static integration.Constants.*;
@@ -27,7 +28,7 @@ import static org.junit.Assert.assertTrue;
 
 public class EndpointsIntegrationTest {
 
-    private static final Logger LOGGER = Logger.getLogger(EndpointsIntegrationTest.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(EndpointsIntegrationTest.class);
 
     @BeforeClass
     public static void before() throws Exception {

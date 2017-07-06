@@ -1,13 +1,14 @@
 package hu.bets.messaging.execution;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.concurrent.Callable;
 
 public abstract class Task<T> implements Callable<List<String>> {
 
-    private static final Logger LOGGER = Logger.getLogger(Task.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(Task.class);
 
     @Override
     public List<String> call() {

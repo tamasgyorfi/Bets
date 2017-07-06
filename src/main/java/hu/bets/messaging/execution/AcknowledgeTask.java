@@ -2,14 +2,15 @@ package hu.bets.messaging.execution;
 
 import hu.bets.model.data.Request;
 import hu.bets.service.FootballBetService;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Collections;
 import java.util.List;
 
 public class AcknowledgeTask extends Task<Void> {
 
-    private static final Logger LOGGER = Logger.getLogger(AcknowledgeTask.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AcknowledgeTask.class);
 
     private FootballBetService footballBetService;
     private Request request;

@@ -7,13 +7,14 @@ import com.rabbitmq.client.DefaultConsumer;
 import com.rabbitmq.client.Envelope;
 import hu.bets.messaging.execution.MessageExecutor;
 import hu.bets.model.data.Request;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
 public class MessageConsumer extends DefaultConsumer {
 
-    private static final Logger LOGGER = Logger.getLogger(MessageConsumer.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(MessageConsumer.class);
 
     private MessageExecutor messageExecutor;
 

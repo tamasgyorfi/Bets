@@ -7,14 +7,15 @@ import hu.bets.config.ApplicationConfig;
 import hu.bets.config.DatabaseConfig;
 import hu.bets.config.MessagingConfig;
 import hu.bets.config.WebConfig;
-import org.apache.log4j.Logger;
 import org.eclipse.jetty.server.Server;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 public class Starter {
 
-    private static final Logger LOGGER = Logger.getLogger(Starter.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(Starter.class);
 
     private ApplicationContext context = new AnnotationConfigApplicationContext(
             ApplicationConfig.class,
@@ -38,7 +39,7 @@ public class Starter {
         try {
             messageListener.receive();
         } catch (Exception e) {
-            LOGGER.error(e);
+            LOGGER.error("Unable to start messaging. ", e);
         }
     }
 

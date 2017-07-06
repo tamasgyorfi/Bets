@@ -3,14 +3,15 @@ package hu.bets.messaging.execution;
 import hu.bets.common.util.hash.HashGenerator;
 import hu.bets.model.data.Request;
 import hu.bets.service.FootballBetService;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.concurrent.CompletionService;
 
 public class MessageExecutor {
 
-    private static final Logger LOGGER = Logger.getLogger(MessageExecutor.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(MessageExecutor.class);
 
     protected CompletionService<List<String>> executorService;
     private FootballBetService footballBetService;

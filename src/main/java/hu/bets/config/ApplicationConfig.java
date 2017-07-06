@@ -13,8 +13,9 @@ import hu.bets.messaging.execution.MessageExecutor;
 import hu.bets.model.data.BetConverter;
 import hu.bets.service.DefaultFootballBetService;
 import hu.bets.service.FootballBetService;
-import org.apache.log4j.Logger;
 import org.bson.Document;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -27,7 +28,7 @@ import java.util.concurrent.Executors;
 @Configuration
 public class ApplicationConfig {
 
-    private static final Logger LOGGER = Logger.getLogger(ApplicationConfig.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ApplicationConfig.class);
 
     @Bean
     public UuidIdGenerator idService() {
