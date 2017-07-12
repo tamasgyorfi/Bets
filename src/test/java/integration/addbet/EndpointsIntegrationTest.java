@@ -7,7 +7,7 @@ import hu.bets.config.WebConfig;
 import hu.bets.steps.Given;
 import hu.bets.steps.Then;
 import hu.bets.steps.When;
-import hu.bets.web.model.BetResponse;
+import hu.bets.web.model.SaveBetResponse;
 import integration.Constants;
 import integration.FakeApplicationConfig;
 import integration.FakeDbConfig;
@@ -64,8 +64,8 @@ public class EndpointsIntegrationTest {
         assertTrue(EntityUtils.toString(response.getEntity()).contains("required key [token] not found") );
     }
 
-    private BetResponse asBetResponse(String betResponse) {
-        return new Gson().fromJson(betResponse, BetResponse.class);
+    private SaveBetResponse asBetResponse(String betResponse) {
+        return new Gson().fromJson(betResponse, SaveBetResponse.class);
     }
 
     @Test

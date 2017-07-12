@@ -1,6 +1,6 @@
 package hu.bets.web.model;
 
-public class Bet {
+public class SaveBetRequest {
 
     private final String userId;
 
@@ -14,7 +14,7 @@ public class Bet {
 
     private final String token;
 
-    public Bet(String userId, String competitionId, String matchId, String homeTeamId, String awayTeamId, byte homeTeamGoals, byte awayTeamGoals, String token) {
+    public SaveBetRequest(String userId, String competitionId, String matchId, String homeTeamId, String awayTeamId, byte homeTeamGoals, byte awayTeamGoals, String token) {
         this.userId = userId;
         this.competitionId = competitionId;
         this.matchId = matchId;
@@ -25,7 +25,7 @@ public class Bet {
         this.token = token;
     }
 
-    private Bet() {
+    private SaveBetRequest() {
         this.userId = "";
         this.competitionId = "";
         this.matchId = "";

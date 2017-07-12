@@ -17,6 +17,7 @@ public class Constants {
     public static final String PORT = "10000";
 
     public static final String ADD_BET_ENDPOINT = "/bets/football/v1/bet";
+    public static final String QUERY_BETS_ENDPOINT = "/bets/football/v1/userBets";
     public static final String INFO_ENDPOINT = "/bets/football/v1/info";
 
     public static final String PROTOCOL = "http";
@@ -30,4 +31,17 @@ public class Constants {
             "   \"homeTeamGoals\":1,\n" +
             "   \"awayTeamGoals\":0\n" +
             "}";
+
+    public static String getBet(String userId, String matchId) {
+        return "{  \n" +
+                "   \"userId\":\""+userId+"\",\n" +
+                "   \"competitionId\":\"aa\",\n" +
+                "   \"matchId\":\""+matchId+"\",\n" +
+                "   \"homeTeamId\":\"aa\",\n" +
+                "   \"awayTeamId\":\"aa\",\n" +
+                "   \"homeTeamGoals\":1,\n" +
+                "   \"awayTeamGoals\":0,\n" +
+                "   \"token\": \"securityToken\"\n" +
+                "}";
+    }
 }

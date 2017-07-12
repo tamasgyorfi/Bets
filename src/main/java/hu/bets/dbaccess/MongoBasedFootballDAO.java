@@ -7,6 +7,7 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.result.UpdateResult;
 import hu.bets.model.data.UserBet;
+import hu.bets.model.data.Result;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 
@@ -40,7 +41,7 @@ public class MongoBasedFootballDAO implements FootballDAO {
         FindIterable<Document> documents = collection.find(matchIdQuery);
         List<UserBet> bets = new ArrayList<>();
 
-        documents.forEach((Consumer<Document>) document-> bets.add(new Gson().fromJson(document.toJson(), UserBet.class)));
+        documents.forEach((Consumer<Document>) document -> bets.add(new Gson().fromJson(document.toJson(), UserBet.class)));
 
         return bets;
     }
@@ -54,5 +55,22 @@ public class MongoBasedFootballDAO implements FootballDAO {
 
         UpdateResult result = collection.updateOne(searchQuery, updateQuery);
         return result.wasAcknowledged();
+    }
+
+    @Override
+    public List<Result> getBetsFor(String userId, List<String> ids) {
+
+        Bson selectQuery = Filters.and(Filters.in("matchId", ids),
+                Filters.eq("userId", userId));
+        FindIterable<Document> documents = collection.find(selectQuery);
+        List<Result> bets = new ArrayList<>();
+
+        documents.forEach((Consumer<Document>) document -> {
+            UserBet userBet = new Gson().fromJson(document.toJson(), UserBet.class);
+            bets.add(new Result(userBet.getMatchId(), userBet.getHomeTeamGoals(), userBet.getAwayTeamGoals()));
+        });
+
+        return bets;
+
     }
 }

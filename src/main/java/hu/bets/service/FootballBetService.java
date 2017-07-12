@@ -1,7 +1,8 @@
 package hu.bets.service;
 
+import hu.bets.model.data.Result;
 import hu.bets.model.data.UserBet;
-import hu.bets.web.model.Bet;
+import hu.bets.web.model.SaveBetRequest;
 
 import java.util.List;
 
@@ -13,11 +14,11 @@ public interface FootballBetService {
     /**
      * Saves a bet to the persistent storage.
      *
-     * @param bet
+     * @param saveBetRequest
      * @return the ID of the new;y saved bet
      * @throws BetSaveException
      */
-    String saveBet(Bet bet) throws BetSaveException;
+    String saveBet(SaveBetRequest saveBetRequest) throws BetSaveException;
 
     /**
      * Finds the bets for the matches referenced by betAggregationRequest
@@ -34,4 +35,14 @@ public interface FootballBetService {
      * @return the user bets which were successfully acknowledged
      */
     List<String> acknowledgeAll(List<String> matchIds);
+
+    /**
+     * Retrieves userBets for a number of IDs and returns a map of the resulting values.
+     *
+     * @param userId the user for which we need to extract bets
+     * @param ids match ids
+     *
+     * @return user bets corresponding to the ids received as param
+     */
+    List<Result> getBetsFor(String userId, List<String> ids);
 }
