@@ -1,7 +1,7 @@
 package hu.bets.dbaccess;
 
+import hu.bets.model.data.Bet;
 import hu.bets.model.data.UserBet;
-import hu.bets.model.data.Result;
 
 import java.util.List;
 
@@ -41,5 +41,5 @@ public interface FootballDAO {
      *
      * @return a list of minimalistic guesses, in form of [homeTeamGoals, awayTeamGoals]
      */
-    List<Result> getBetsFor(String userId, List<String> ids);
+    List<Bet> getBetsFor(String userId, List<String> ids);
 }

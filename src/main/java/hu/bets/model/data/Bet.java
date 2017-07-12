@@ -6,14 +6,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Minimalistic view on a user's guess. It incorporates a match ID and the goals for the two sides.
  */
-public class Result {
+public class Bet {
 
     private final String matchId;
     private final byte homeTeamGoals;
     private final byte awayTeamGoals;
 
     @JsonCreator
-    public Result(@JsonProperty("matchId") String matchId, @JsonProperty("homeTeamGoals") byte homeTeamGoals, @JsonProperty("awayTeamGoals") byte awayTeamGoals) {
+    public Bet(@JsonProperty("matchId") String matchId, @JsonProperty("homeTeamGoals") byte homeTeamGoals, @JsonProperty("awayTeamGoals") byte awayTeamGoals) {
         this.matchId = matchId;
         this.homeTeamGoals = homeTeamGoals;
         this.awayTeamGoals = awayTeamGoals;
@@ -36,11 +36,11 @@ public class Result {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Result result = (Result) o;
+        Bet bet = (Bet) o;
 
-        if (homeTeamGoals != result.homeTeamGoals) return false;
-        if (awayTeamGoals != result.awayTeamGoals) return false;
-        return matchId != null ? matchId.equals(result.matchId) : result.matchId == null;
+        if (homeTeamGoals != bet.homeTeamGoals) return false;
+        if (awayTeamGoals != bet.awayTeamGoals) return false;
+        return matchId != null ? matchId.equals(bet.matchId) : bet.matchId == null;
     }
 
     @Override
@@ -49,5 +49,14 @@ public class Result {
         result = 31 * result + (int) homeTeamGoals;
         result = 31 * result + (int) awayTeamGoals;
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Bet{" +
+                "matchId='" + matchId + '\'' +
+                ", homeTeamGoals=" + homeTeamGoals +
+                ", awayTeamGoals=" + awayTeamGoals +
+                '}';
     }
 }

@@ -1,38 +1,31 @@
 package hu.bets.web.model;
 
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
+import hu.bets.model.data.Bet;
+import hu.bets.model.data.Match;
+
 public class SaveBetRequest {
 
     private final String userId;
 
-    private final String competitionId;
-    private final String matchId;
-    private final String homeTeamId;
-    private final String awayTeamId;
-
-    private final byte homeTeamGoals;
-    private final byte awayTeamGoals;
+    @JsonUnwrapped
+    private final Match match;
+    @JsonUnwrapped
+    private final Bet bet;
 
     private final String token;
 
-    public SaveBetRequest(String userId, String competitionId, String matchId, String homeTeamId, String awayTeamId, byte homeTeamGoals, byte awayTeamGoals, String token) {
+    public SaveBetRequest(String userId, Match match, Bet bet, String token) {
         this.userId = userId;
-        this.competitionId = competitionId;
-        this.matchId = matchId;
-        this.homeTeamId = homeTeamId;
-        this.awayTeamId = awayTeamId;
-        this.homeTeamGoals = homeTeamGoals;
-        this.awayTeamGoals = awayTeamGoals;
+        this.match = match;
+        this.bet = bet;
         this.token = token;
     }
 
     private SaveBetRequest() {
         this.userId = "";
-        this.competitionId = "";
-        this.matchId = "";
-        this.homeTeamId = "";
-        this.awayTeamId = "";
-        this.homeTeamGoals = -1;
-        this.awayTeamGoals = -1;
+        this.match = null;
+        this.bet = null;
         this.token = "";
     }
 
@@ -40,28 +33,12 @@ public class SaveBetRequest {
         return userId;
     }
 
-    public String getCompetitionId() {
-        return competitionId;
+    public Match getMatch() {
+        return match;
     }
 
-    public String getMatchId() {
-        return matchId;
-    }
-
-    public String getHomeTeamId() {
-        return homeTeamId;
-    }
-
-    public String getAwayTeamId() {
-        return awayTeamId;
-    }
-
-    public byte getHomeTeamGoals() {
-        return homeTeamGoals;
-    }
-
-    public byte getAwayTeamGoals() {
-        return awayTeamGoals;
+    public Bet getBet() {
+        return bet;
     }
 
     public String getToken() {

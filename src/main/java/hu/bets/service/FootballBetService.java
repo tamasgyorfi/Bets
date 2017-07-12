@@ -1,6 +1,6 @@
 package hu.bets.service;
 
-import hu.bets.model.data.Result;
+import hu.bets.model.data.Bet;
 import hu.bets.model.data.UserBet;
 import hu.bets.web.model.SaveBetRequest;
 
@@ -44,5 +44,5 @@ public interface FootballBetService {
      *
      * @return user bets corresponding to the ids received as param
      */
-    List<Result> getBetsFor(String userId, List<String> ids);
+    List<Bet> getBetsFor(String userId, List<String> ids);
 }

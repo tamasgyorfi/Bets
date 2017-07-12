@@ -2,7 +2,7 @@ package integration.requestbet;
 
 import hu.bets.config.MessagingConfig;
 import hu.bets.config.WebConfig;
-import hu.bets.model.data.Result;
+import hu.bets.model.data.Bet;
 import hu.bets.steps.Given;
 import hu.bets.steps.When;
 import hu.bets.util.Json;
@@ -58,10 +58,10 @@ public class RequestBetsTest {
         BetForIdResponse betForIdResponse = new Json().fromJson(EntityUtils.toString(httpResponse.getEntity()), BetForIdResponse.class);
 
         assertEquals("", betForIdResponse.getError());
-        List<Result> payload = betForIdResponse.getPayload();
+        List<Bet> payload = betForIdResponse.getPayload();
         assertEquals(3, payload.size());
-        assertEquals(new Result("match2", (byte) 1, (byte) 0), payload.get(0));
-        assertEquals(new Result("match3", (byte) 1, (byte) 0), payload.get(1));
-        assertEquals(new Result("match4", (byte) 1, (byte) 0), payload.get(2));
+        assertEquals(new Bet("match2", (byte) 1, (byte) 0), payload.get(0));
+        assertEquals(new Bet("match3", (byte) 1, (byte) 0), payload.get(1));
+        assertEquals(new Bet("match4", (byte) 1, (byte) 0), payload.get(2));
     }
 }

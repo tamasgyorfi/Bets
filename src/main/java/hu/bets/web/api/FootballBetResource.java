@@ -2,7 +2,7 @@ package hu.bets.web.api;
 
 import hu.bets.common.util.schema.InvalidScemaException;
 import hu.bets.common.util.schema.SchemaValidator;
-import hu.bets.model.data.Result;
+import hu.bets.model.data.Bet;
 import hu.bets.service.BetSaveException;
 import hu.bets.service.FootballBetService;
 import hu.bets.util.Json;
@@ -62,8 +62,8 @@ public class FootballBetResource {
         LOGGER.info("Read bets request received: " + input);
         try {
             BetForIdRequest betForIdRequest = JSON.fromJson(input, BetForIdRequest.class);
-            List<Result> results = footballBetService.getBetsFor(betForIdRequest.getUserId(), betForIdRequest.getIds());
-            return JSON.toJson(BetForIdResponse.success(results, "token-to-be-filled"));
+            List<Bet> bets = footballBetService.getBetsFor(betForIdRequest.getUserId(), betForIdRequest.getIds());
+            return JSON.toJson(BetForIdResponse.success(bets, "token-to-be-filled"));
         } catch (Exception e) {
             return JSON.toJson(BetForIdResponse.failure(e.getMessage(), "token-to-be-filled"));
         }

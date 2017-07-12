@@ -2,8 +2,8 @@ package hu.bets.service;
 
 import com.google.common.collect.Lists;
 import hu.bets.dbaccess.FootballDAO;
+import hu.bets.model.data.Bet;
 import hu.bets.model.data.BetConverter;
-import hu.bets.model.data.Result;
 import hu.bets.model.data.UserBet;
 import hu.bets.web.model.SaveBetRequest;
 import org.slf4j.Logger;
@@ -51,9 +51,9 @@ public class DefaultFootballBetService implements FootballBetService {
     }
 
     @Override
-    public List<Result> getBetsFor(String userId, List<String> ids) {
+    public List<Bet> getBetsFor(String userId, List<String> ids) {
         LOGGER.info("Querying the database for userId {} and matchIds {}", userId, ids);
-        List<Result> bets = footballDAO.getBetsFor(userId, ids);
+        List<Bet> bets = footballDAO.getBetsFor(userId, ids);
         LOGGER.info("Resulting bets are {}", bets);
 
         return bets;

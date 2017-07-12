@@ -2,7 +2,7 @@ package hu.bets.web.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import hu.bets.model.data.Result;
+import hu.bets.model.data.Bet;
 
 import java.util.Collections;
 import java.util.List;
@@ -10,16 +10,16 @@ import java.util.List;
 public class BetForIdResponse {
 
     private String error;
-    private List<Result> payload = Collections.emptyList();
+    private List<Bet> payload = Collections.emptyList();
     private String token;
 
     @JsonCreator
-    private BetForIdResponse(@JsonProperty("error") String error, @JsonProperty("payload") List<Result> payload, @JsonProperty("token") String token) {
+    private BetForIdResponse(@JsonProperty("error") String error, @JsonProperty("payload") List<Bet> payload, @JsonProperty("token") String token) {
         this.error = error;
         this.payload = payload;
     }
 
-    public static BetForIdResponse success(List<Result> payload, String token) {
+    public static BetForIdResponse success(List<Bet> payload, String token) {
         return new BetForIdResponse("", payload, token);
     }
 
@@ -31,7 +31,7 @@ public class BetForIdResponse {
         return error;
     }
 
-    public List<Result> getPayload() {
+    public List<Bet> getPayload() {
         return payload;
     }
 }

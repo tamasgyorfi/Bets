@@ -3,6 +3,7 @@ package hu.bets.model.data;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
 
 import java.time.LocalDateTime;
 
@@ -11,13 +12,10 @@ public class UserBet {
 
     private String userId;
 
-    private String competitionId;
-    private String matchId;
-    private String homeTeamId;
-    private String awayTeamId;
-
-    private byte homeTeamGoals;
-    private byte awayTeamGoals;
+    @JsonUnwrapped
+    private Match match;
+    @JsonUnwrapped
+    private Bet bet;
 
     private LocalDateTime eventReceived;
     private String betId;
@@ -25,51 +23,26 @@ public class UserBet {
 
     @JsonCreator
     public UserBet(@JsonProperty("userId") String userId,
-                   @JsonProperty("competitionId")String competitionId,
-                   @JsonProperty("matchId")String matchId,
-                   @JsonProperty("homeTeamId")String homeTeamId,
-                   @JsonProperty("awayTeamId")String awayTeamId,
-                   @JsonProperty("homeTeamGoals")byte homeTeamGoals,
-                   @JsonProperty("awayTeamGoals")byte awayTeamGoals,
-                   @JsonProperty("betId")String betId) {
+                   @JsonProperty("match") Match match,
+                   @JsonProperty("bet") Bet bet,
+                   @JsonProperty("betId") String betId) {
         this.userId = userId;
-        this.competitionId = competitionId;
-        this.matchId = matchId;
-        this.homeTeamId = homeTeamId;
-        this.awayTeamId = awayTeamId;
-        this.homeTeamGoals = homeTeamGoals;
-        this.awayTeamGoals = awayTeamGoals;
+        this.match = match;
+        this.bet = bet;
         this.betId = betId;
         this.eventReceived = LocalDateTime.now();
     }
-
 
     public String getUserId() {
         return userId;
     }
 
-    public String getCompetitionId() {
-        return competitionId;
+    public Match getMatch() {
+        return match;
     }
 
-    public String getMatchId() {
-        return matchId;
-    }
-
-    public String getHomeTeamId() {
-        return homeTeamId;
-    }
-
-    public String getAwayTeamId() {
-        return awayTeamId;
-    }
-
-    public byte getHomeTeamGoals() {
-        return homeTeamGoals;
-    }
-
-    public byte getAwayTeamGoals() {
-        return awayTeamGoals;
+    public Bet getBet() {
+        return bet;
     }
 
     public LocalDateTime getEventReceived() {
@@ -88,12 +61,8 @@ public class UserBet {
     public String toString() {
         return "UserBet{" +
                 "userId='" + userId + '\'' +
-                ", competitionId='" + competitionId + '\'' +
-                ", matchId='" + matchId + '\'' +
-                ", homeTeamId='" + homeTeamId + '\'' +
-                ", awayTeamId='" + awayTeamId + '\'' +
-                ", homeTeamGoals=" + homeTeamGoals +
-                ", awayTeamGoals=" + awayTeamGoals +
+                ", match='" + match + '\'' +
+                ", bet='" + bet + '\'' +
                 ", eventReceived=" + eventReceived +
                 ", betId='" + betId + '\'' +
                 ", acknowledged=" + acknowledged +
