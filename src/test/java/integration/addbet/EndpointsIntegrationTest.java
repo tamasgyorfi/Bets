@@ -1,12 +1,12 @@
 package integration.addbet;
 
-import com.google.gson.Gson;
 import com.mongodb.client.MongoCollection;
 import hu.bets.config.MessagingConfig;
 import hu.bets.config.WebConfig;
 import hu.bets.steps.Given;
 import hu.bets.steps.Then;
 import hu.bets.steps.When;
+import hu.bets.util.Json;
 import hu.bets.web.model.SaveBetResponse;
 import integration.Constants;
 import integration.FakeApplicationConfig;
@@ -61,11 +61,11 @@ public class EndpointsIntegrationTest {
 
         HttpResponse response = When.iMakeAPostRequest(PROTOCOL + "://" + HOST + ":" + PORT + ADD_BET_ENDPOINT, Constants.INVALID_POST_JSON);
 
-        assertTrue(EntityUtils.toString(response.getEntity()).contains("required key [token] not found") );
+        assertTrue(EntityUtils.toString(response.getEntity()).contains("required key [token] not found"));
     }
 
     private SaveBetResponse asBetResponse(String betResponse) {
-        return new Gson().fromJson(betResponse, SaveBetResponse.class);
+        return new Json().fromJson(betResponse, SaveBetResponse.class);
     }
 
     @Test

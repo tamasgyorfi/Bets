@@ -1,6 +1,5 @@
 package hu.bets.dbaccess;
 
-import com.google.gson.Gson;
 import com.mongodb.BasicDBObject;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
@@ -8,6 +7,7 @@ import com.mongodb.client.model.Filters;
 import com.mongodb.client.result.UpdateResult;
 import hu.bets.model.data.UserBet;
 import hu.bets.model.data.Result;
+import hu.bets.util.Json;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 
@@ -26,8 +26,8 @@ public class MongoBasedFootballDAO implements FootballDAO {
     @Override
     public String save(UserBet bet) {
 
-        Gson gson = new Gson();
-        String jsonBet = gson.toJson(bet);
+        Json json = new Json();
+        String jsonBet = json.toJson(bet);
 
         collection.insertOne(Document.parse(jsonBet));
 
@@ -41,7 +41,7 @@ public class MongoBasedFootballDAO implements FootballDAO {
         FindIterable<Document> documents = collection.find(matchIdQuery);
         List<UserBet> bets = new ArrayList<>();
 
-        documents.forEach((Consumer<Document>) document -> bets.add(new Gson().fromJson(document.toJson(), UserBet.class)));
+        documents.forEach((Consumer<Document>) document -> bets.add(new Json().fromJson(document.toJson(), UserBet.class)));
 
         return bets;
     }
@@ -66,7 +66,7 @@ public class MongoBasedFootballDAO implements FootballDAO {
         List<Result> bets = new ArrayList<>();
 
         documents.forEach((Consumer<Document>) document -> {
-            UserBet userBet = new Gson().fromJson(document.toJson(), UserBet.class);
+            UserBet userBet = new Json().fromJson(document.toJson(), UserBet.class);
             bets.add(new Result(userBet.getMatchId(), userBet.getHomeTeamGoals(), userBet.getAwayTeamGoals()));
         });
 

@@ -1,12 +1,19 @@
 package hu.bets.model.data;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+/**
+ * Minimalistic view on a user's guess. It incorporates a match ID and the goals for the two sides.
+ */
 public class Result {
 
     private final String matchId;
     private final byte homeTeamGoals;
     private final byte awayTeamGoals;
 
-    public Result(String matchId, byte homeTeamGoals, byte awayTeamGoals) {
+    @JsonCreator
+    public Result(@JsonProperty("matchId") String matchId, @JsonProperty("homeTeamGoals") byte homeTeamGoals, @JsonProperty("awayTeamGoals") byte awayTeamGoals) {
         this.matchId = matchId;
         this.homeTeamGoals = homeTeamGoals;
         this.awayTeamGoals = awayTeamGoals;

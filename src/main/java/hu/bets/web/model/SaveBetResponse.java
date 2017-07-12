@@ -1,11 +1,15 @@
 package hu.bets.web.model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class SaveBetResponse {
 
     private String id;
     private String error;
 
-    private SaveBetResponse(String id, String error) {
+    @JsonCreator
+    private SaveBetResponse(@JsonProperty("id") String id, @JsonProperty("error") String error) {
         this.id = id;
         this.error = error;
     }

@@ -1,5 +1,7 @@
 package hu.bets.web.model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import hu.bets.model.data.Result;
 
 import java.util.Collections;
@@ -11,7 +13,8 @@ public class BetForIdResponse {
     private List<Result> payload = Collections.emptyList();
     private String token;
 
-    private BetForIdResponse(String error, List<Result> payload, String token) {
+    @JsonCreator
+    private BetForIdResponse(@JsonProperty("error") String error, @JsonProperty("payload") List<Result> payload, @JsonProperty("token") String token) {
         this.error = error;
         this.payload = payload;
     }

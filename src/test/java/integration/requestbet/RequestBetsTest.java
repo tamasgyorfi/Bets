@@ -1,11 +1,11 @@
 package integration.requestbet;
 
-import com.google.gson.Gson;
 import hu.bets.config.MessagingConfig;
 import hu.bets.config.WebConfig;
 import hu.bets.model.data.Result;
 import hu.bets.steps.Given;
 import hu.bets.steps.When;
+import hu.bets.util.Json;
 import hu.bets.web.model.BetForIdRequest;
 import hu.bets.web.model.BetForIdResponse;
 import integration.Constants;
@@ -54,8 +54,8 @@ public class RequestBetsTest {
         When.iMakeAPostRequest(PROTOCOL + "://" + HOST + ":" + PORT + ADD_BET_ENDPOINT, Constants.getBet("user2", "match4"));
         When.iMakeAPostRequest(PROTOCOL + "://" + HOST + ":" + PORT + ADD_BET_ENDPOINT, Constants.getBet("user2", "match5"));
 
-        HttpResponse httpResponse = When.iMakeAPostRequest(PROTOCOL + "://" + HOST + ":" + PORT + QUERY_BETS_ENDPOINT, new Gson().toJson(new BetForIdRequest("user2", Arrays.asList("match2", "match3", "match4", "match9"), "token")));
-        BetForIdResponse betForIdResponse = new Gson().fromJson(EntityUtils.toString(httpResponse.getEntity()), BetForIdResponse.class);
+        HttpResponse httpResponse = When.iMakeAPostRequest(PROTOCOL + "://" + HOST + ":" + PORT + QUERY_BETS_ENDPOINT, new Json().toJson(new BetForIdRequest("user2", Arrays.asList("match2", "match3", "match4", "match9"), "token")));
+        BetForIdResponse betForIdResponse = new Json().fromJson(EntityUtils.toString(httpResponse.getEntity()), BetForIdResponse.class);
 
         assertEquals("", betForIdResponse.getError());
         List<Result> payload = betForIdResponse.getPayload();

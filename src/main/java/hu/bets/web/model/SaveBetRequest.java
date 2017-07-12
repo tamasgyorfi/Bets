@@ -63,4 +63,8 @@ public class SaveBetRequest {
     public byte getAwayTeamGoals() {
         return awayTeamGoals;
     }
+
+    public String getToken() {
+        return token;
+    }
 }

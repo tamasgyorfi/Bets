@@ -1,6 +1,8 @@
 package hu.bets.model.data;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.LocalDateTime;
 
@@ -21,7 +23,15 @@ public class UserBet {
     private String betId;
     private boolean acknowledged;
 
-    public UserBet(String userId, String competitionId, String matchId, String homeTeamId, String awayTeamId, byte homeTeamGoals, byte awayTeamGoals, String betId) {
+    @JsonCreator
+    public UserBet(@JsonProperty("userId") String userId,
+                   @JsonProperty("competitionId")String competitionId,
+                   @JsonProperty("matchId")String matchId,
+                   @JsonProperty("homeTeamId")String homeTeamId,
+                   @JsonProperty("awayTeamId")String awayTeamId,
+                   @JsonProperty("homeTeamGoals")byte homeTeamGoals,
+                   @JsonProperty("awayTeamGoals")byte awayTeamGoals,
+                   @JsonProperty("betId")String betId) {
         this.userId = userId;
         this.competitionId = competitionId;
         this.matchId = matchId;

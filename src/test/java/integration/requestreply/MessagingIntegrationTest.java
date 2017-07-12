@@ -1,6 +1,5 @@
 package integration.requestreply;
 
-import com.google.gson.Gson;
 import com.mongodb.BasicDBObject;
 import com.mongodb.client.MongoCollection;
 import hu.bets.config.MessagingConfig;
@@ -10,6 +9,7 @@ import hu.bets.model.data.UserBet;
 import hu.bets.steps.Given;
 import hu.bets.steps.Then;
 import hu.bets.steps.When;
+import hu.bets.util.Json;
 import integration.Constants;
 import integration.FakeApplicationConfig;
 import integration.FakeDbConfig;
@@ -18,12 +18,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import static hu.bets.messaging.MessageType.AGGREGATION_REQUEST;
 import static hu.bets.messaging.MessagingConstants.*;
 import static integration.Constants.*;
 import static junit.framework.TestCase.assertTrue;
@@ -56,8 +53,8 @@ public class MessagingIntegrationTest {
         List<byte[]> messages = Then.iExpectOutgoingMessages(BETS_TO_SCORES_QUEUE, BETS_TO_SCORES_ROUTE, 2);
 
         assertEquals(2, messages.size());
-        BetAggregationResponse message1 = new Gson().fromJson(new String(messages.get(0)), BetAggregationResponse.class);
-        BetAggregationResponse message2 = new Gson().fromJson(new String(messages.get(1)), BetAggregationResponse.class);
+        BetAggregationResponse message1 = new Json().fromJson(new String(messages.get(0)), BetAggregationResponse.class);
+        BetAggregationResponse message2 = new Json().fromJson(new String(messages.get(1)), BetAggregationResponse.class);
 
         assertEquals(100, message1.getNumberOfElements());
         assertEquals(1, message2.getNumberOfElements());
@@ -71,7 +68,7 @@ public class MessagingIntegrationTest {
         When.iSendAMessage("{\"payload\":[\"aa\"],\"type\":\"ACKNOWLEDGE_REQUEST\"}", null, BETS_TO_SCORES_QUEUE, SCORES_TO_BETS_ROUTE);
 
         TimeUnit.SECONDS.sleep(1);
-        UserBet userBet = new Gson().fromJson(dataSource.find(new BasicDBObject("betId", "aa")).first().toJson(), UserBet.class);
+        UserBet userBet = new Json().fromJson(dataSource.find(new BasicDBObject("betId", "aa")).first().toJson(), UserBet.class);
 
         assertTrue(userBet.isAcknowledged());
     }

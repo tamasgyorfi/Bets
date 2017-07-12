@@ -1,12 +1,12 @@
 package hu.bets.messaging.receiver;
 
-import com.google.gson.Gson;
 import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.DefaultConsumer;
 import com.rabbitmq.client.Envelope;
 import hu.bets.messaging.execution.MessageExecutor;
 import hu.bets.model.data.Request;
+import hu.bets.util.Json;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,7 +30,7 @@ public class MessageConsumer extends DefaultConsumer {
         LOGGER.info("Received message: " + message);
 
         try {
-            Request request = new Gson().fromJson(message, Request.class);
+            Request request = new Json().fromJson(message, Request.class);
             messageExecutor.submit(request);
         } catch (Exception e) {
             LOGGER.error("Unable to submit request. ", e);
