@@ -1,10 +1,15 @@
 package integration.requestbet;
 
+import com.mongodb.client.FindIterable;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.model.Filters;
 import hu.bets.config.MessagingConfig;
 import hu.bets.config.WebConfig;
 import hu.bets.model.data.Bet;
+import hu.bets.model.data.UserBet;
 import hu.bets.steps.Given;
 import hu.bets.steps.When;
+import hu.bets.steps.util.ApplicationContextHolder;
 import hu.bets.util.Json;
 import hu.bets.web.model.BetForIdRequest;
 import hu.bets.web.model.BetForIdResponse;
@@ -13,6 +18,7 @@ import integration.FakeApplicationConfig;
 import integration.FakeDbConfig;
 import org.apache.http.HttpResponse;
 import org.apache.http.util.EntityUtils;
+import org.bson.Document;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -64,4 +70,21 @@ public class RequestBetsTest {
         assertEquals(new Bet("match3", "aa", (byte) 1, (byte) 0), payload.get(1));
         assertEquals(new Bet("match4", "aa", (byte) 1, (byte) 0), payload.get(2));
     }
+
+    @Test
+    public void shouldUpdateABet() throws Exception {
+        When.iMakeAPostRequest(PROTOCOL + "://" + HOST + ":" + PORT + ADD_BET_ENDPOINT, Constants.getBet("user1", "match1"));
+        When.iMakeAPostRequest(PROTOCOL + "://" + HOST + ":" + PORT + ADD_BET_ENDPOINT, Constants.getBet("user1", "match1", "aa", 2, 6));
+
+        MongoCollection coll = ApplicationContextHolder.getBean(MongoCollection.class);
+        Document res = (Document) coll.find(Filters.and(Filters.eq("betId", "aa"),
+                Filters.eq("userId", "user1"),
+                Filters.eq("matchId", "match1")
+                )).first();
+
+        UserBet userBet = new Json().fromJson(res.toJson(), UserBet.class);
+        assertEquals(2, userBet.getBet().getHomeTeamGoals());
+        assertEquals(6, userBet.getBet().getAwayTeamGoals());
+    }
+
 }

@@ -36,7 +36,7 @@ public class Constants {
             "      \"awayTeamId\": \"aa\",\n" +
             "      \"homeTeamGoals\": 1,\n" +
             "      \"awayTeamGoals\": 0\n" +
-            "    }]"+
+            "    }]" +
             "}";
 
     public static String getBet(String userId, String matchId) {
@@ -54,4 +54,22 @@ public class Constants {
                 "  \"token\": \"djskal\"\n" +
                 "}";
     }
+
+    public static String getBet(String userId, String matchId, String betId, int homeGoals, int awayGoals) {
+        return "{\n" +
+                "  \"userId\":\"" + userId + "\",\n" +
+                "  \"bets\": [\n" +
+                "    {\n" +
+                "      \"competitionId\": \"aa\",\n" +
+                "      \"matchId\": \"" + matchId + "\",\n" +
+                "      \"betId\": \"" + betId + "\",\n" +
+                "      \"homeTeamId\": \"aa\",\n" +
+                "      \"awayTeamId\": \"aa\",\n" +
+                "      \"homeTeamGoals\": "+homeGoals+",\n" +
+                "      \"awayTeamGoals\": "+awayGoals+"\n" +
+                "    }],\n" +
+                "  \"token\": \"djskal\"\n" +
+                "}";
+    }
+
 }

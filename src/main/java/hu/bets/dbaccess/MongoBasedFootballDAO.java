@@ -75,8 +75,12 @@ public class MongoBasedFootballDAO implements FootballDAO {
 
     @Override
     public String update(UserBet bet) {
-        Bson matchIdQuery = Filters.in("betId", bet.getBet().getBetId());
-        collection.findOneAndReplace(matchIdQuery, Document.parse(new Json().toJson(bet)));
+        Bson matchIdQuery = Filters.and(
+                Filters.eq("betId", bet.getBet().getBetId()),
+                Filters.eq("userId", bet.getUserId()),
+                Filters.eq("matchId", bet.getMatch().getMatchId()));
+
+        Document oneAndReplace = collection.findOneAndReplace(matchIdQuery, Document.parse(new Json().toJson(bet)));
         return bet.getBet().getBetId();
     }
 }
