@@ -47,8 +47,8 @@ public class FootballBetResource {
         LOGGER.info("Save bet request received: " + input);
         try {
             SaveBetRequest saveBetRequest = validateAndParse(input);
-            String id = footballBetService.saveBet(saveBetRequest);
-            return JSON.toJson(SaveBetResponse.success(id));
+            footballBetService.saveBet(saveBetRequest);
+            return JSON.toJson(SaveBetResponse.success(saveBetRequest.getUserId()));
         } catch (BetSaveException | InvalidScemaException e) {
             return JSON.toJson(SaveBetResponse.failure(e.getMessage()));
         }

@@ -1,7 +1,7 @@
 package hu.bets.model.data;
 
 import hu.bets.common.util.IdGenerator;
-import hu.bets.web.model.SaveBetRequest;
+import hu.bets.web.model.BetRequest;
 
 public class BetConverter {
 
@@ -11,11 +11,15 @@ public class BetConverter {
         this.idGenerator = idGenerator;
     }
 
-    public UserBet fromBet(SaveBetRequest saveBetRequest) {
-        return new UserBet(saveBetRequest.getUserId(),
-                saveBetRequest.getMatch(),
-                saveBetRequest.getBet(),
-                idGenerator.generateBetId(saveBetRequest.getUserId())
-        );
+    public UserBet createUpdateUserBet(String userId, BetRequest saveBetRequest) {
+        return new UserBet(userId,
+                new Match(saveBetRequest.getMatchId(), saveBetRequest.getCompetitionId(), saveBetRequest.getHomeTeamId(), saveBetRequest.getAwayTeamId()),
+                new Bet(saveBetRequest.getMatchId(), saveBetRequest.getBetId(), saveBetRequest.getHomeTeamGoals(), saveBetRequest.getAwayTeamGoals()));
+    }
+
+    public UserBet createNewUserBet(String userId, BetRequest saveBetRequest) {
+        return new UserBet(userId,
+                new Match(saveBetRequest.getMatchId(), saveBetRequest.getCompetitionId(), saveBetRequest.getHomeTeamId(), saveBetRequest.getAwayTeamId()),
+                new Bet(saveBetRequest.getMatchId(), idGenerator.generateBetId(userId), saveBetRequest.getHomeTeamGoals(), saveBetRequest.getAwayTeamGoals()));
     }
 }

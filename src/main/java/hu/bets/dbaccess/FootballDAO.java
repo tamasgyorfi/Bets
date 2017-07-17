@@ -37,9 +37,16 @@ public interface FootballDAO {
      * Reteurns user's bets for a number of matches identified by their IDs.
      *
      * @param userId the user for which bets are requested
-     * @param ids matchIds
-     *
+     * @param ids    matchIds
      * @return a list of minimalistic guesses, in form of [homeTeamGoals, awayTeamGoals]
      */
     List<Bet> getBetsFor(String userId, List<String> ids);
+
+    /**
+     * Updates an earlier bet in the database;
+     *
+     * @param bet - the bet which contains the new values
+     * @return the bet id on successful update.
+     */
+    String update(UserBet bet);
 }

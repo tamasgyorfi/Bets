@@ -2,15 +2,19 @@ package integration;
 
 public class Constants {
 
-    public static final String POST_JSON = "{  \n" +
-            "   \"userId\":\"aa\",\n" +
-            "   \"competitionId\":\"aa\",\n" +
-            "   \"matchId\":\"aa\",\n" +
-            "   \"homeTeamId\":\"aa\",\n" +
-            "   \"awayTeamId\":\"aa\",\n" +
-            "   \"homeTeamGoals\":1,\n" +
-            "   \"awayTeamGoals\":0,\n" +
-            "   \"token\": \"securityToken\"\n" +
+    public static final String POST_JSON = "{\n" +
+            "  \"userId\": \"aa\",\n" +
+            "  \"bets\": [\n" +
+            "    {\n" +
+            "      \"competitionId\": \"aa\",\n" +
+            "      \"matchId\": \"aa\",\n" +
+            "      \"homeTeamId\": \"aa\",\n" +
+            "      \"awayTeamId\": \"aa\",\n" +
+            "      \"homeTeamGoals\": 1,\n" +
+            "      \"awayTeamGoals\": 0\n" +
+            "    }\n" +
+            "  ],\n" +
+            "  \"token\": \"djskal\"\n" +
             "}";
 
     public static final String HOST = "localhost";
@@ -22,26 +26,32 @@ public class Constants {
 
     public static final String PROTOCOL = "http";
 
-    public static final String INVALID_POST_JSON = "{  \n" +
-            "   \"userId\":\"aa\",\n" +
-            "   \"competitionId\":\"aa\",\n" +
-            "   \"matchId\":\"aa\",\n" +
-            "   \"homeTeamId\":\"aa\",\n" +
-            "   \"awayTeamId\":\"aa\",\n" +
-            "   \"homeTeamGoals\":1,\n" +
-            "   \"awayTeamGoals\":0\n" +
+    public static final String INVALID_POST_JSON = "{\n" +
+            "  \"userId\": \"aa\",\n" +
+            "  \"bets\": [\n" +
+            "    {\n" +
+            "      \"competitionId\": \"aa\",\n" +
+            "      \"matchId\": \"aa\",\n" +
+            "      \"homeTeamId\": \"aa\",\n" +
+            "      \"awayTeamId\": \"aa\",\n" +
+            "      \"homeTeamGoals\": 1,\n" +
+            "      \"awayTeamGoals\": 0\n" +
+            "    }]"+
             "}";
 
     public static String getBet(String userId, String matchId) {
-        return "{  \n" +
-                "   \"userId\":\""+userId+"\",\n" +
-                "   \"competitionId\":\"aa\",\n" +
-                "   \"matchId\":\""+matchId+"\",\n" +
-                "   \"homeTeamId\":\"aa\",\n" +
-                "   \"awayTeamId\":\"aa\",\n" +
-                "   \"homeTeamGoals\":1,\n" +
-                "   \"awayTeamGoals\":0,\n" +
-                "   \"token\": \"securityToken\"\n" +
+        return "{\n" +
+                "  \"userId\":\"" + userId + "\",\n" +
+                "  \"bets\": [\n" +
+                "    {\n" +
+                "      \"competitionId\": \"aa\",\n" +
+                "      \"matchId\": \"" + matchId + "\",\n" +
+                "      \"homeTeamId\": \"aa\",\n" +
+                "      \"awayTeamId\": \"aa\",\n" +
+                "      \"homeTeamGoals\": 1,\n" +
+                "      \"awayTeamGoals\": 0\n" +
+                "    }],\n" +
+                "  \"token\": \"djskal\"\n" +
                 "}";
     }
 }

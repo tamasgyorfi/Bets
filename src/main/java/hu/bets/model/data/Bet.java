@@ -9,26 +9,35 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class Bet {
 
     private final String matchId;
-    private final byte homeTeamGoals;
-    private final byte awayTeamGoals;
+    private final String betId;
+    private final int homeTeamGoals;
+    private final int awayTeamGoals;
 
     @JsonCreator
-    public Bet(@JsonProperty("matchId") String matchId, @JsonProperty("homeTeamGoals") byte homeTeamGoals, @JsonProperty("awayTeamGoals") byte awayTeamGoals) {
+    public Bet(@JsonProperty("matchId") String matchId,
+               @JsonProperty("betId") String betId,
+               @JsonProperty("homeTeamGoals") int homeTeamGoals,
+               @JsonProperty("awayTeamGoals") int awayTeamGoals) {
         this.matchId = matchId;
+        this.betId = betId;
         this.homeTeamGoals = homeTeamGoals;
         this.awayTeamGoals = awayTeamGoals;
     }
 
-    public byte getHomeTeamGoals() {
+    public int getHomeTeamGoals() {
         return homeTeamGoals;
     }
 
-    public byte getAwayTeamGoals() {
+    public int getAwayTeamGoals() {
         return awayTeamGoals;
     }
 
     public String getMatchId() {
         return matchId;
+    }
+
+    public String getBetId() {
+        return betId;
     }
 
     @Override
@@ -40,12 +49,14 @@ public class Bet {
 
         if (homeTeamGoals != bet.homeTeamGoals) return false;
         if (awayTeamGoals != bet.awayTeamGoals) return false;
-        return matchId != null ? matchId.equals(bet.matchId) : bet.matchId == null;
+        if (matchId != null ? !matchId.equals(bet.matchId) : bet.matchId != null) return false;
+        return betId != null ? betId.equals(bet.betId) : bet.betId == null;
     }
 
     @Override
     public int hashCode() {
         int result = matchId != null ? matchId.hashCode() : 0;
+        result = 31 * result + (betId != null ? betId.hashCode() : 0);
         result = 31 * result + (int) homeTeamGoals;
         result = 31 * result + (int) awayTeamGoals;
         return result;
@@ -55,6 +66,7 @@ public class Bet {
     public String toString() {
         return "Bet{" +
                 "matchId='" + matchId + '\'' +
+                ", betId='" + betId + '\'' +
                 ", homeTeamGoals=" + homeTeamGoals +
                 ", awayTeamGoals=" + awayTeamGoals +
                 '}';

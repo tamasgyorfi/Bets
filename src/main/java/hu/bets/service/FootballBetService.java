@@ -12,13 +12,13 @@ import java.util.List;
 public interface FootballBetService {
 
     /**
-     * Saves a bet to the persistent storage.
+     * Saves a number of bets to the persistent storage.
      *
      * @param saveBetRequest
      * @return the ID of the new;y saved bet
      * @throws BetSaveException
      */
-    String saveBet(SaveBetRequest saveBetRequest) throws BetSaveException;
+    void saveBet(SaveBetRequest saveBetRequest) throws BetSaveException;
 
     /**
      * Finds the bets for the matches referenced by betAggregationRequest
@@ -40,8 +40,7 @@ public interface FootballBetService {
      * Retrieves userBets for a number of IDs and returns a map of the resulting values.
      *
      * @param userId the user for which we need to extract bets
-     * @param ids match ids
-     *
+     * @param ids    match ids
      * @return user bets corresponding to the ids received as param
      */
     List<Bet> getBetsFor(String userId, List<String> ids);

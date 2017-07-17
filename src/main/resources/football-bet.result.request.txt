@@ -1,9 +1,17 @@
 {  
    "userId":"aa",
-   "competitionId":"aa",
-   "matchId":"aa",
-   "homeTeamId":"aa",
-   "awayTeamId":"aa",
-   "homeTeamGoals":1,
-   "awayTeamGoals":0
+   "bets": [
+  {"competitionId":"aa",
+    "matchId":"aa",
+    "betId":"hkljsdf"
+    "homeTeamId":"aa",
+    "awayTeamId":"aa",
+    "homeTeamGoals":1,
+    "awayTeamGoals":0},
+  {"competitionId":"aa",
+      "matchId":"aa",
+      "homeTeamId":"aa",
+      "awayTeamId":"aa",
+      "homeTeamGoals":1,
+      "awayTeamGoals":0}]
 }

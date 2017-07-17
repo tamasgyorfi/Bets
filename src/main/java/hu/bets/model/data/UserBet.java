@@ -18,18 +18,15 @@ public class UserBet {
     private Bet bet;
 
     private LocalDateTime eventReceived;
-    private String betId;
     private boolean acknowledged;
 
     @JsonCreator
     public UserBet(@JsonProperty("userId") String userId,
                    @JsonProperty("match") Match match,
-                   @JsonProperty("bet") Bet bet,
-                   @JsonProperty("betId") String betId) {
+                   @JsonProperty("bet") Bet bet) {
         this.userId = userId;
         this.match = match;
         this.bet = bet;
-        this.betId = betId;
         this.eventReceived = LocalDateTime.now();
     }
 
@@ -49,10 +46,6 @@ public class UserBet {
         return eventReceived;
     }
 
-    public String getBetId() {
-        return betId;
-    }
-
     public boolean isAcknowledged() {
         return acknowledged;
     }
@@ -64,7 +57,6 @@ public class UserBet {
                 ", match='" + match + '\'' +
                 ", bet='" + bet + '\'' +
                 ", eventReceived=" + eventReceived +
-                ", betId='" + betId + '\'' +
                 ", acknowledged=" + acknowledged +
                 '}';
     }

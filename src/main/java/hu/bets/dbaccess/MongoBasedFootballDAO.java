@@ -30,7 +30,7 @@ public class MongoBasedFootballDAO implements FootballDAO {
         String jsonBet = json.toJson(bet);
 
         collection.insertOne(Document.parse(jsonBet));
-        return bet.getBetId();
+        return bet.getBet().getBetId();
     }
 
     @Override
@@ -71,5 +71,12 @@ public class MongoBasedFootballDAO implements FootballDAO {
 
         return bets;
 
+    }
+
+    @Override
+    public String update(UserBet bet) {
+        Bson matchIdQuery = Filters.in("betId", bet.getBet().getBetId());
+        collection.findOneAndReplace(matchIdQuery, Document.parse(new Json().toJson(bet)));
+        return bet.getBet().getBetId();
     }
 }

@@ -60,8 +60,8 @@ public class RequestBetsTest {
         assertEquals("", betForIdResponse.getError());
         List<Bet> payload = betForIdResponse.getPayload();
         assertEquals(3, payload.size());
-        assertEquals(new Bet("match2", (byte) 1, (byte) 0), payload.get(0));
-        assertEquals(new Bet("match3", (byte) 1, (byte) 0), payload.get(1));
-        assertEquals(new Bet("match4", (byte) 1, (byte) 0), payload.get(2));
+        assertEquals(new Bet("match2", "aa", (byte) 1, (byte) 0), payload.get(0));
+        assertEquals(new Bet("match3", "aa", (byte) 1, (byte) 0), payload.get(1));
+        assertEquals(new Bet("match4", "aa", (byte) 1, (byte) 0), payload.get(2));
     }
 }

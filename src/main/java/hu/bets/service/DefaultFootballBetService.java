@@ -5,6 +5,7 @@ import hu.bets.dbaccess.FootballDAO;
 import hu.bets.model.data.Bet;
 import hu.bets.model.data.BetConverter;
 import hu.bets.model.data.UserBet;
+import hu.bets.web.model.BetRequest;
 import hu.bets.web.model.SaveBetRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,8 +27,14 @@ public class DefaultFootballBetService implements FootballBetService {
     }
 
     @Override
-    public String saveBet(SaveBetRequest saveBetRequest) throws BetSaveException {
-        return footballDAO.save(betConverter.fromBet(saveBetRequest));
+    public void saveBet(SaveBetRequest saveBetRequest) throws BetSaveException {
+        for (BetRequest betRequest : saveBetRequest.getBets()) {
+            if (betRequest.getBetId() == null) {
+                footballDAO.save(betConverter.createNewUserBet(saveBetRequest.getUserId(), betRequest));
+            } else {
+                footballDAO.update(betConverter.createUpdateUserBet(saveBetRequest.getUserId(), betRequest));
+            }
+        }
     }
 
     @Override
