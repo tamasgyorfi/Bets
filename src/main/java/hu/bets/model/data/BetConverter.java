@@ -11,12 +11,6 @@ public class BetConverter {
         this.idGenerator = idGenerator;
     }
 
-    public UserBet createUpdateUserBet(String userId, BetRequest saveBetRequest) {
-        return new UserBet(userId,
-                new Match(saveBetRequest.getMatchId(), saveBetRequest.getCompetitionId(), saveBetRequest.getHomeTeamId(), saveBetRequest.getAwayTeamId()),
-                new Bet(saveBetRequest.getMatchId(), saveBetRequest.getBetId(), saveBetRequest.getHomeTeamGoals(), saveBetRequest.getAwayTeamGoals()));
-    }
-
     public UserBet createNewUserBet(String userId, BetRequest saveBetRequest) {
         return new UserBet(userId,
                 new Match(saveBetRequest.getMatchId(), saveBetRequest.getCompetitionId(), saveBetRequest.getHomeTeamId(), saveBetRequest.getAwayTeamId()),

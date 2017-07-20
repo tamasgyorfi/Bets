@@ -1,6 +1,5 @@
 package integration.requestbet;
 
-import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Filters;
 import hu.bets.config.MessagingConfig;
@@ -74,17 +73,18 @@ public class RequestBetsTest {
     @Test
     public void shouldUpdateABet() throws Exception {
         When.iMakeAPostRequest(PROTOCOL + "://" + HOST + ":" + PORT + ADD_BET_ENDPOINT, Constants.getBet("user1", "match1"));
-        When.iMakeAPostRequest(PROTOCOL + "://" + HOST + ":" + PORT + ADD_BET_ENDPOINT, Constants.getBet("user1", "match1", "aa", 2, 6));
+        When.iMakeAPostRequest(PROTOCOL + "://" + HOST + ":" + PORT + ADD_BET_ENDPOINT, Constants.getBet("user1", "match1", "different-bet-id", 2, 6));
 
         MongoCollection coll = ApplicationContextHolder.getBean(MongoCollection.class);
         Document res = (Document) coll.find(Filters.and(Filters.eq("betId", "aa"),
                 Filters.eq("userId", "user1"),
                 Filters.eq("matchId", "match1")
-                )).first();
+        )).first();
 
         UserBet userBet = new Json().fromJson(res.toJson(), UserBet.class);
         assertEquals(2, userBet.getBet().getHomeTeamGoals());
         assertEquals(6, userBet.getBet().getAwayTeamGoals());
+        assertEquals("aa", userBet.getBet().getBetId());
     }
 
 }

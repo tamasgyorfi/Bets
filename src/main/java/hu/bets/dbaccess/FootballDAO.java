@@ -42,11 +42,4 @@ public interface FootballDAO {
      */
     List<Bet> getBetsFor(String userId, List<String> ids);
 
-    /**
-     * Updates an earlier bet in the database;
-     *
-     * @param bet - the bet which contains the new values
-     * @return the bet id on successful update.
-     */
-    String update(UserBet bet);
 }

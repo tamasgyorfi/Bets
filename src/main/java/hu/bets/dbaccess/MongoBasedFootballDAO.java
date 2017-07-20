@@ -13,6 +13,7 @@ import org.bson.conversions.Bson;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Consumer;
 
 public class MongoBasedFootballDAO implements FootballDAO {
@@ -25,9 +26,12 @@ public class MongoBasedFootballDAO implements FootballDAO {
 
     @Override
     public String save(UserBet bet) {
+        Optional<Document> betFromDb = getBetFromDb(bet);
+        return betFromDb.map(document -> update(bet, document)).orElseGet(() -> create(bet));
+    }
 
-        Json json = new Json();
-        String jsonBet = json.toJson(bet);
+    private String create(UserBet bet) {
+        String jsonBet = new Json().toJson(bet);
 
         collection.insertOne(Document.parse(jsonBet));
         return bet.getBet().getBetId();
@@ -73,14 +77,25 @@ public class MongoBasedFootballDAO implements FootballDAO {
 
     }
 
-    @Override
-    public String update(UserBet bet) {
-        Bson matchIdQuery = Filters.and(
-                Filters.eq("betId", bet.getBet().getBetId()),
+    private String update(UserBet bet, Document oldBet) {
+        BasicDBObject newObject = new BasicDBObject("$set", new BasicDBObject()
+                .append("homeTeamGoals", bet.getBet().getHomeTeamGoals())
+                .append("awayTeamGoals", bet.getBet().getAwayTeamGoals()));
+        Bson betQuery = getUpdateFilterQuery(bet);
+
+        collection.updateOne(betQuery, newObject);
+        return bet.getBet().getBetId();
+    }
+
+    private Optional<Document> getBetFromDb(UserBet bet) {
+        Bson query = getUpdateFilterQuery(bet);
+        return Optional.ofNullable(collection.find(query).first());
+    }
+
+    private Bson getUpdateFilterQuery(UserBet bet) {
+        return Filters.and(
                 Filters.eq("userId", bet.getUserId()),
                 Filters.eq("matchId", bet.getMatch().getMatchId()));
 
-        Document oneAndReplace = collection.findOneAndReplace(matchIdQuery, Document.parse(new Json().toJson(bet)));
-        return bet.getBet().getBetId();
     }
 }

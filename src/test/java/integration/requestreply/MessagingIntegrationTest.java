@@ -47,7 +47,9 @@ public class MessagingIntegrationTest {
     @Test
     public void aggregationMessageShouldTriggerAggregationReply() throws Exception {
 
-        When.iRepeateAPostRequest(PROTOCOL + "://" + HOST + ":" + PORT + ADD_BET_ENDPOINT, Constants.POST_JSON, 101);
+        for (int i = 0; i < 101; i++) {
+            When.iMakeAPostRequest(PROTOCOL + "://" + HOST + ":" + PORT + ADD_BET_ENDPOINT, Constants.getBet("user1" + i, "aa"));
+        }
         When.iSendAMessage("{\"payload\":[\"aa\"],\"type\":\"BETS_REQUEST\"}", null, SCORES_TO_BETS_QUEUE, SCORES_TO_BETS_ROUTE);
 
         List<byte[]> messages = Then.iExpectOutgoingMessages(BETS_TO_SCORES_QUEUE, BETS_TO_SCORES_ROUTE, 2);
