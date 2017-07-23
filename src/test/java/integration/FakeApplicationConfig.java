@@ -1,8 +1,8 @@
 package integration;
 
 import hu.bets.common.util.IdGenerator;
-import hu.bets.common.util.servicediscovery.EurekaFacade;
 import hu.bets.config.ApplicationConfig;
+import hu.bets.servicediscovery.EurekaFacade;
 import org.springframework.context.annotation.Bean;
 
 import java.util.concurrent.Future;

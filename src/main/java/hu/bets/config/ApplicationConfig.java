@@ -1,18 +1,19 @@
 package hu.bets.config;
 
 import com.mongodb.client.MongoCollection;
+import hu.bets.common.util.EnvironmentVarResolver;
 import hu.bets.common.util.IdGenerator;
 import hu.bets.common.util.UuidIdGenerator;
 import hu.bets.common.util.hash.MD5HashGenerator;
 import hu.bets.common.util.schema.SchemaValidator;
-import hu.bets.common.util.servicediscovery.DefaultEurekaFacade;
-import hu.bets.common.util.servicediscovery.EurekaFacade;
 import hu.bets.dbaccess.FootballDAO;
 import hu.bets.dbaccess.MongoBasedFootballDAO;
 import hu.bets.messaging.execution.MessageExecutor;
 import hu.bets.model.data.BetConverter;
 import hu.bets.service.DefaultFootballBetService;
 import hu.bets.service.FootballBetService;
+import hu.bets.servicediscovery.EurekaFacade;
+import hu.bets.servicediscovery.EurekaFacadeImpl;
 import org.bson.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -73,6 +74,6 @@ public class ApplicationConfig {
 
     @Bean
     public EurekaFacade eurekaFacade() {
-        return new DefaultEurekaFacade();
+        return new EurekaFacadeImpl(new EnvironmentVarResolver().getEnvVar("EUREKA_URL"));
     }
 }

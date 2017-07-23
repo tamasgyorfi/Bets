@@ -4,14 +4,14 @@
   {"competitionId":"aa",
     "matchId":"aa",
     "betId":"hkljsdf"
-    "homeTeamId":"aa",
-    "awayTeamId":"aa",
+    "homeTeamName":"aa",
+    "awayTeamName":"aa",
     "homeTeamGoals":1,
     "awayTeamGoals":0},
   {"competitionId":"aa",
       "matchId":"aa",
-      "homeTeamId":"aa",
-      "awayTeamId":"aa",
+      "homeTeamName":"aa",
+      "awayTeamName":"aa",
       "homeTeamGoals":1,
       "awayTeamGoals":0}]
 }
