@@ -6,10 +6,7 @@ import hu.bets.model.data.Bet;
 import hu.bets.service.BetSaveException;
 import hu.bets.service.FootballBetService;
 import hu.bets.util.Json;
-import hu.bets.web.model.BetForIdRequest;
-import hu.bets.web.model.BetForIdResponse;
-import hu.bets.web.model.SaveBetRequest;
-import hu.bets.web.model.SaveBetResponse;
+import hu.bets.web.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +14,7 @@ import org.springframework.stereotype.Component;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.util.List;
 
 @Component
@@ -68,6 +66,22 @@ public class FootballBetResource {
             return JSON.toJson(BetForIdResponse.failure(e.getMessage(), "token-to-be-filled"));
         }
     }
+
+    @POST
+    @Path("user-bets")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getFilteredUserBets(String input) {
+        LOGGER.info("Read bets request received: " + input);
+        try {
+            BetForFilterRequest betForIdRequest = JSON.fromJson(input, BetForFilterRequest.class);
+            List<Bet> bets = footballBetService.getBetsForFilter(betForIdRequest.getFilters());
+            return Response.ok(BetForIdResponse.success(bets, "token-to-be-filled")).build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.BAD_REQUEST).entity(BetForIdResponse.failure(e.getMessage(), "token-to-be-filled")).build();
+        }
+    }
+
 
     private SaveBetRequest validateAndParse(String input) {
         LOGGER.info("Validating incoming payload.");

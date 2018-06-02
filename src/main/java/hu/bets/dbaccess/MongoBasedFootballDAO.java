@@ -5,8 +5,10 @@ import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.result.UpdateResult;
+import hu.bets.dbaccess.filter.FilterHandler;
 import hu.bets.model.data.Bet;
 import hu.bets.model.data.UserBet;
+import hu.bets.model.filter.Filter;
 import hu.bets.util.Json;
 import org.bson.Document;
 import org.bson.conversions.Bson;
@@ -19,9 +21,11 @@ import java.util.function.Consumer;
 public class MongoBasedFootballDAO implements FootballDAO {
 
     private MongoCollection<Document> collection;
+    private FilterHandler filterHandler;
 
-    public MongoBasedFootballDAO(MongoCollection<Document> collection) {
+    public MongoBasedFootballDAO(MongoCollection<Document> collection, FilterHandler filterHandler) {
         this.collection = collection;
+        this.filterHandler = filterHandler;
     }
 
     @Override
@@ -75,6 +79,21 @@ public class MongoBasedFootballDAO implements FootballDAO {
 
         return bets;
 
+    }
+
+    @Override
+    public List<Bet> getBetsForFilter(List<Filter> filters) {
+        Document document = Document.parse(filterHandler.processAll(filters));
+
+        FindIterable<Document> documents = collection.find(document);
+        List<Bet> bets = new ArrayList<>();
+
+        documents.forEach((Consumer<Document>) doc -> {
+            UserBet userBet = new Json().fromJson(doc.toJson(), UserBet.class);
+            bets.add(userBet.getBet());
+        });
+
+        return bets;
     }
 
     private String update(UserBet bet, Document oldBet) {

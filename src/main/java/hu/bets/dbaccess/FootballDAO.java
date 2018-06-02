@@ -2,6 +2,7 @@ package hu.bets.dbaccess;
 
 import hu.bets.model.data.Bet;
 import hu.bets.model.data.UserBet;
+import hu.bets.model.filter.Filter;
 
 import java.util.List;
 
@@ -42,4 +43,11 @@ public interface FootballDAO {
      */
     List<Bet> getBetsFor(String userId, List<String> ids);
 
+    /**
+     * Returns bets for a number of filters
+     *
+     * @param filters
+     * @return a list of bets
+     */
+    List<Bet> getBetsForFilter(List<Filter> filters);
 }

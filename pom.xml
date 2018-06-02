@@ -51,6 +51,12 @@
         </dependency>
 
         <dependency>
+            <groupId>hu.bets</groupId>
+            <artifactId>football-bets-shared</artifactId>
+            <version>0.0.3</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-core</artifactId>
             <version>${spring.version}</version>

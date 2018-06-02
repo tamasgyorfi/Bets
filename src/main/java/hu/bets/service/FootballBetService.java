@@ -2,6 +2,7 @@ package hu.bets.service;
 
 import hu.bets.model.data.Bet;
 import hu.bets.model.data.UserBet;
+import hu.bets.model.filter.Filter;
 import hu.bets.web.model.SaveBetRequest;
 
 import java.util.List;
@@ -44,4 +45,12 @@ public interface FootballBetService {
      * @return user bets corresponding to the ids received as param
      */
     List<Bet> getBetsFor(String userId, List<String> ids);
+
+    /**
+     * Retrieves userBets for a number of filters.
+     *
+     * @param filters the filters to apply for the data query
+     * @return user bets satisfying the filter conditions (all filters are connected by AND semantic)
+     */
+    List<Bet> getBetsForFilter(List<Filter> filters);
 }

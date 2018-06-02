@@ -5,6 +5,7 @@ import hu.bets.dbaccess.FootballDAO;
 import hu.bets.model.data.Bet;
 import hu.bets.model.data.BetConverter;
 import hu.bets.model.data.UserBet;
+import hu.bets.model.filter.Filter;
 import hu.bets.web.model.BetRequest;
 import hu.bets.web.model.SaveBetRequest;
 import org.slf4j.Logger;
@@ -58,6 +59,19 @@ public class DefaultFootballBetService implements FootballBetService {
         LOGGER.info("Querying the database for userId {} and matchIds {}", userId, ids);
         List<Bet> bets = footballDAO.getBetsFor(userId, ids);
         LOGGER.info("Resulting bets are {}", bets);
+
+        return bets;
+    }
+
+    @Override
+    public List<Bet> getBetsForFilter(List<Filter> filters) {
+        LOGGER.info("Querying the database for filters {}", filters);
+        if (filters.isEmpty()) {
+            throw new IllegalArgumentException("Empty filter clauses are not permitted.");
+        }
+        List<Bet> bets = footballDAO.getBetsForFilter(filters);
+        LOGGER.info("Resulting bets are {}", bets);
+
 
         return bets;
     }

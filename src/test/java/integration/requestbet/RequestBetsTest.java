@@ -6,10 +6,14 @@ import hu.bets.config.MessagingConfig;
 import hu.bets.config.WebConfig;
 import hu.bets.model.data.Bet;
 import hu.bets.model.data.UserBet;
+import hu.bets.model.filter.EqualsFilter;
+import hu.bets.model.filter.Field;
+import hu.bets.model.filter.MultiEqualsFilter;
 import hu.bets.steps.Given;
 import hu.bets.steps.When;
 import hu.bets.steps.util.ApplicationContextHolder;
 import hu.bets.util.Json;
+import hu.bets.web.model.BetForFilterRequest;
 import hu.bets.web.model.BetForIdRequest;
 import hu.bets.web.model.BetForIdResponse;
 import integration.Constants;
@@ -28,6 +32,7 @@ import java.util.concurrent.TimeUnit;
 
 import static integration.Constants.*;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 public class RequestBetsTest {
 
@@ -85,6 +90,86 @@ public class RequestBetsTest {
         assertEquals(2, userBet.getBet().getHomeTeamGoals());
         assertEquals(6, userBet.getBet().getAwayTeamGoals());
         assertEquals("aa", userBet.getBet().getBetId());
+    }
+
+    @Test
+    public void shouldReturnAllTheMatchesForARequestUsingOneFilter() throws Exception {
+        When.iMakeAPostRequest(PROTOCOL + "://" + HOST + ":" + PORT + ADD_BET_ENDPOINT, Constants.getBet("user1", "match1"));
+        When.iMakeAPostRequest(PROTOCOL + "://" + HOST + ":" + PORT + ADD_BET_ENDPOINT, Constants.getBet("user1", "match2"));
+        When.iMakeAPostRequest(PROTOCOL + "://" + HOST + ":" + PORT + ADD_BET_ENDPOINT, Constants.getBet("user1", "match3"));
+        When.iMakeAPostRequest(PROTOCOL + "://" + HOST + ":" + PORT + ADD_BET_ENDPOINT, Constants.getBet("user1", "match4"));
+        When.iMakeAPostRequest(PROTOCOL + "://" + HOST + ":" + PORT + ADD_BET_ENDPOINT, Constants.getBet("user1", "match5"));
+
+        When.iMakeAPostRequest(PROTOCOL + "://" + HOST + ":" + PORT + ADD_BET_ENDPOINT, Constants.getBet("user2", "match1"));
+        When.iMakeAPostRequest(PROTOCOL + "://" + HOST + ":" + PORT + ADD_BET_ENDPOINT, Constants.getBet("user2", "match2"));
+        When.iMakeAPostRequest(PROTOCOL + "://" + HOST + ":" + PORT + ADD_BET_ENDPOINT, Constants.getBet("user2", "match3"));
+        When.iMakeAPostRequest(PROTOCOL + "://" + HOST + ":" + PORT + ADD_BET_ENDPOINT, Constants.getBet("user2", "match4"));
+        When.iMakeAPostRequest(PROTOCOL + "://" + HOST + ":" + PORT + ADD_BET_ENDPOINT, Constants.getBet("user2", "match5"));
+
+        HttpResponse httpResponse = When.iMakeAPostRequest(PROTOCOL + "://" + HOST + ":" + PORT + FILTER_QUERY_ENDPOINT, new Json().toJson(new BetForFilterRequest(Arrays.asList(new EqualsFilter(Field.USER_ID, "user1")), "token")));
+        BetForIdResponse betForIdResponse = new Json().fromJson(EntityUtils.toString(httpResponse.getEntity()), BetForIdResponse.class);
+
+        assertEquals("", betForIdResponse.getError());
+        List<Bet> payload = betForIdResponse.getPayload();
+        assertEquals(5, payload.size());
+        assertEquals(new Bet("match1", "aa", (byte) 1, (byte) 0), payload.get(0));
+        assertEquals(new Bet("match2", "aa", (byte) 1, (byte) 0), payload.get(1));
+        assertEquals(new Bet("match3", "aa", (byte) 1, (byte) 0), payload.get(2));
+        assertEquals(new Bet("match4", "aa", (byte) 1, (byte) 0), payload.get(3));
+        assertEquals(new Bet("match5", "aa", (byte) 1, (byte) 0), payload.get(4));
+
+    }
+
+    @Test
+    public void shouldReturnAllTheMatchesForARequestByFilterQuery() throws Exception {
+        When.iMakeAPostRequest(PROTOCOL + "://" + HOST + ":" + PORT + ADD_BET_ENDPOINT, Constants.getBet("user1", "match1"));
+        When.iMakeAPostRequest(PROTOCOL + "://" + HOST + ":" + PORT + ADD_BET_ENDPOINT, Constants.getBet("user1", "match2"));
+        When.iMakeAPostRequest(PROTOCOL + "://" + HOST + ":" + PORT + ADD_BET_ENDPOINT, Constants.getBet("user1", "match3"));
+        When.iMakeAPostRequest(PROTOCOL + "://" + HOST + ":" + PORT + ADD_BET_ENDPOINT, Constants.getBet("user1", "match4"));
+        When.iMakeAPostRequest(PROTOCOL + "://" + HOST + ":" + PORT + ADD_BET_ENDPOINT, Constants.getBet("user1", "match5"));
+
+        When.iMakeAPostRequest(PROTOCOL + "://" + HOST + ":" + PORT + ADD_BET_ENDPOINT, Constants.getBet("user2", "match1"));
+        When.iMakeAPostRequest(PROTOCOL + "://" + HOST + ":" + PORT + ADD_BET_ENDPOINT, Constants.getBet("user2", "match2"));
+        When.iMakeAPostRequest(PROTOCOL + "://" + HOST + ":" + PORT + ADD_BET_ENDPOINT, Constants.getBet("user2", "match3"));
+        When.iMakeAPostRequest(PROTOCOL + "://" + HOST + ":" + PORT + ADD_BET_ENDPOINT, Constants.getBet("user2", "match4"));
+        When.iMakeAPostRequest(PROTOCOL + "://" + HOST + ":" + PORT + ADD_BET_ENDPOINT, Constants.getBet("user2", "match5"));
+
+        HttpResponse httpResponse = When.iMakeAPostRequest(PROTOCOL + "://" + HOST + ":" + PORT + FILTER_QUERY_ENDPOINT, new Json().toJson(
+                new BetForFilterRequest(Arrays.asList(
+                        new EqualsFilter(Field.USER_ID, "user1"),
+                        new MultiEqualsFilter(Field.MATCH_ID, Arrays.asList("match2", "match3", "match4", "match9"))
+                ), "token")));
+        BetForIdResponse betForIdResponse = new Json().fromJson(EntityUtils.toString(httpResponse.getEntity()), BetForIdResponse.class);
+
+        assertEquals("", betForIdResponse.getError());
+        List<Bet> payload = betForIdResponse.getPayload();
+        assertEquals(3, payload.size());
+        assertEquals(new Bet("match2", "aa", (byte) 1, (byte) 0), payload.get(0));
+        assertEquals(new Bet("match3", "aa", (byte) 1, (byte) 0), payload.get(1));
+        assertEquals(new Bet("match4", "aa", (byte) 1, (byte) 0), payload.get(2));
+    }
+
+    @Test
+    public void filterQueryApiShouldReturnAnErrorForNoFilterSpecified() throws Exception {
+        When.iMakeAPostRequest(PROTOCOL + "://" + HOST + ":" + PORT + ADD_BET_ENDPOINT, Constants.getBet("user1", "match1"));
+        When.iMakeAPostRequest(PROTOCOL + "://" + HOST + ":" + PORT + ADD_BET_ENDPOINT, Constants.getBet("user1", "match2"));
+        When.iMakeAPostRequest(PROTOCOL + "://" + HOST + ":" + PORT + ADD_BET_ENDPOINT, Constants.getBet("user1", "match3"));
+        When.iMakeAPostRequest(PROTOCOL + "://" + HOST + ":" + PORT + ADD_BET_ENDPOINT, Constants.getBet("user1", "match4"));
+        When.iMakeAPostRequest(PROTOCOL + "://" + HOST + ":" + PORT + ADD_BET_ENDPOINT, Constants.getBet("user1", "match5"));
+
+        When.iMakeAPostRequest(PROTOCOL + "://" + HOST + ":" + PORT + ADD_BET_ENDPOINT, Constants.getBet("user2", "match1"));
+        When.iMakeAPostRequest(PROTOCOL + "://" + HOST + ":" + PORT + ADD_BET_ENDPOINT, Constants.getBet("user2", "match2"));
+        When.iMakeAPostRequest(PROTOCOL + "://" + HOST + ":" + PORT + ADD_BET_ENDPOINT, Constants.getBet("user2", "match3"));
+        When.iMakeAPostRequest(PROTOCOL + "://" + HOST + ":" + PORT + ADD_BET_ENDPOINT, Constants.getBet("user2", "match4"));
+        When.iMakeAPostRequest(PROTOCOL + "://" + HOST + ":" + PORT + ADD_BET_ENDPOINT, Constants.getBet("user2", "match5"));
+
+        HttpResponse httpResponse = When.iMakeAPostRequest(PROTOCOL + "://" + HOST + ":" + PORT + FILTER_QUERY_ENDPOINT, new Json().toJson(
+                new BetForFilterRequest(Arrays.asList(), "token")));
+        BetForIdResponse betForIdResponse = new Json().fromJson(EntityUtils.toString(httpResponse.getEntity()), BetForIdResponse.class);
+
+        assertEquals("Empty filter clauses are not permitted.", betForIdResponse.getError());
+        List<Bet> payload = betForIdResponse.getPayload();
+        assertNull(payload);
     }
 
 }

@@ -8,6 +8,7 @@ import hu.bets.common.util.hash.MD5HashGenerator;
 import hu.bets.common.util.schema.SchemaValidator;
 import hu.bets.dbaccess.FootballDAO;
 import hu.bets.dbaccess.MongoBasedFootballDAO;
+import hu.bets.dbaccess.filter.FilterHandler;
 import hu.bets.messaging.execution.MessageExecutor;
 import hu.bets.model.data.BetConverter;
 import hu.bets.service.DefaultFootballBetService;
@@ -37,8 +38,8 @@ public class ApplicationConfig {
     }
 
     @Bean
-    public FootballDAO footballDAO(MongoCollection<Document> collection) {
-        return new MongoBasedFootballDAO(collection);
+    public FootballDAO footballDAO(MongoCollection<Document> collection, FilterHandler filterHandler) {
+        return new MongoBasedFootballDAO(collection, filterHandler);
     }
 
     @Bean
