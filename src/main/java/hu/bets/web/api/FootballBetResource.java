@@ -56,21 +56,6 @@ public class FootballBetResource {
     }
 
     @POST
-    @Path("userBets")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public String getUserBets(String input) {
-        LOGGER.info("Read bets request received: " + input);
-        try {
-            BetForIdRequest betForIdRequest = JSON.fromJson(input, BetForIdRequest.class);
-            List<Bet> bets = footballBetService.getBetsFor(betForIdRequest.getUserId(), betForIdRequest.getIds());
-            return JSON.toJson(BetForIdResponse.success(bets, "token-to-be-filled"));
-        } catch (Exception e) {
-            return JSON.toJson(BetForIdResponse.failure(e.getMessage(), "token-to-be-filled"));
-        }
-    }
-
-    @POST
     @Path("{userId}/user-bets")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)

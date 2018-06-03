@@ -58,31 +58,6 @@ public class RequestBetsTest {
     }
 
     @Test
-    public void shouldReturnAllTheMatchesForARequest() throws Exception {
-        When.iMakeAPostRequest(PROTOCOL + "://" + HOST + ":" + PORT + String.format(ADD_BET_ENDPOINT, "user1"), Constants.getBet("match1"));
-        When.iMakeAPostRequest(PROTOCOL + "://" + HOST + ":" + PORT + String.format(ADD_BET_ENDPOINT, "user1"), Constants.getBet("match2"));
-        When.iMakeAPostRequest(PROTOCOL + "://" + HOST + ":" + PORT + String.format(ADD_BET_ENDPOINT, "user1"), Constants.getBet("match3"));
-        When.iMakeAPostRequest(PROTOCOL + "://" + HOST + ":" + PORT + String.format(ADD_BET_ENDPOINT, "user1"), Constants.getBet("match4"));
-        When.iMakeAPostRequest(PROTOCOL + "://" + HOST + ":" + PORT + String.format(ADD_BET_ENDPOINT, "user1"), Constants.getBet("match5"));
-
-        When.iMakeAPostRequest(PROTOCOL + "://" + HOST + ":" + PORT + String.format(ADD_BET_ENDPOINT, "user2"), Constants.getBet("match1"));
-        When.iMakeAPostRequest(PROTOCOL + "://" + HOST + ":" + PORT + String.format(ADD_BET_ENDPOINT, "user2"), Constants.getBet("match2"));
-        When.iMakeAPostRequest(PROTOCOL + "://" + HOST + ":" + PORT + String.format(ADD_BET_ENDPOINT, "user2"), Constants.getBet("match3"));
-        When.iMakeAPostRequest(PROTOCOL + "://" + HOST + ":" + PORT + String.format(ADD_BET_ENDPOINT, "user2"), Constants.getBet("match4"));
-        When.iMakeAPostRequest(PROTOCOL + "://" + HOST + ":" + PORT + String.format(ADD_BET_ENDPOINT, "user2"), Constants.getBet("match5"));
-
-        HttpResponse httpResponse = When.iMakeAPostRequest(PROTOCOL + "://" + HOST + ":" + PORT + QUERY_BETS_ENDPOINT, new Json().toJson(new BetForIdRequest("user2", Arrays.asList("match2", "match3", "match4", "match9"), "token")));
-        BetForIdResponse betForIdResponse = new Json().fromJson(EntityUtils.toString(httpResponse.getEntity()), BetForIdResponse.class);
-
-        assertEquals("", betForIdResponse.getError());
-        List<Bet> payload = betForIdResponse.getPayload();
-        assertEquals(3, payload.size());
-        assertEquals(new Bet("match2", "aa", (byte) 1, (byte) 0), payload.get(0));
-        assertEquals(new Bet("match3", "aa", (byte) 1, (byte) 0), payload.get(1));
-        assertEquals(new Bet("match4", "aa", (byte) 1, (byte) 0), payload.get(2));
-    }
-
-    @Test
     public void shouldUpdateABet() throws Exception {
         When.iMakeAPostRequest(PROTOCOL + "://" + HOST + ":" + PORT + String.format(ADD_BET_ENDPOINT, "user1"), Constants.getBet("match1"));
         When.iMakeAPostRequest(PROTOCOL + "://" + HOST + ":" + PORT + String.format(ADD_BET_ENDPOINT, "user1"), Constants.getBet("match1", "different-bet-id", 2, 6));

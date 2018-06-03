@@ -21,7 +21,6 @@ public class Constants {
     public static final String PORT = "10000";
 
     public static final String ADD_BET_ENDPOINT = "/bets/football/v1/%s/bets";
-    public static final String QUERY_BETS_ENDPOINT = "/bets/football/v1/userBets";
     public static final String INFO_ENDPOINT = "/bets/football/v1/info";
     public static final String FILTER_QUERY_ENDPOINT = "/bets/football/v1/%s/user-bets";
 

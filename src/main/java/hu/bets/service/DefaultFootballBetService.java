@@ -64,15 +64,6 @@ public class DefaultFootballBetService implements FootballBetService {
     }
 
     @Override
-    public List<Bet> getBetsFor(String userId, List<String> ids) {
-        LOGGER.info("Querying the database for userId {} and matchIds {}", userId, ids);
-        List<Bet> bets = footballDAO.getBetsFor(userId, ids);
-        LOGGER.info("Resulting bets are {}", bets);
-
-        return bets;
-    }
-
-    @Override
     public List<Bet> getBetsForFilter(String userId, List<Filter> filters) {
         LOGGER.info("Querying the database for filters {} and user {}", filters, userId);
         List<Filter> allFilters = Lists.newArrayList(filters);

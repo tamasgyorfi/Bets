@@ -35,7 +35,7 @@ public class MongoBasedFootballDAO implements FootballDAO {
     @Override
     public String save(UserBet bet) {
         Optional<Document> betFromDb = getBetFromDb(bet);
-        return betFromDb.map(document -> update(bet, document)).orElseGet(() -> create(bet));
+        return betFromDb.map(document -> update(bet)).orElseGet(() -> create(bet));
     }
 
     private String create(UserBet bet) {
@@ -69,23 +69,6 @@ public class MongoBasedFootballDAO implements FootballDAO {
     }
 
     @Override
-    public List<Bet> getBetsFor(String userId, List<String> ids) {
-
-        Bson selectQuery = Filters.and(Filters.in("matchId", ids),
-                Filters.eq("userId", userId));
-        FindIterable<Document> documents = collection.find(selectQuery);
-        List<Bet> bets = new ArrayList<>();
-
-        documents.forEach((Consumer<Document>) document -> {
-            UserBet userBet = new Json().fromJson(document.toJson(), UserBet.class);
-            bets.add(userBet.getBet());
-        });
-
-        return bets;
-
-    }
-
-    @Override
     public List<Bet> getBetsForFilter(List<Filter> filters) {
 
         String query = filterHandler.processAll(filters);
@@ -105,7 +88,7 @@ public class MongoBasedFootballDAO implements FootballDAO {
         return bets;
     }
 
-    private String update(UserBet bet, Document oldBet) {
+    private String update(UserBet bet) {
         BasicDBObject newObject = new BasicDBObject("$set", new BasicDBObject()
                 .append("homeTeamGoals", bet.getBet().getHomeTeamGoals())
                 .append("awayTeamGoals", bet.getBet().getAwayTeamGoals()));

@@ -35,15 +35,6 @@ public interface FootballDAO {
     boolean acknowledge(String betId);
 
     /**
-     * Reteurns user's bets for a number of matches identified by their IDs.
-     *
-     * @param userId the user for which bets are requested
-     * @param ids    matchIds
-     * @return a list of minimalistic guesses, in form of [homeTeamGoals, awayTeamGoals]
-     */
-    List<Bet> getBetsFor(String userId, List<String> ids);
-
-    /**
      * Returns bets for a number of filters
      *
      * @param filters

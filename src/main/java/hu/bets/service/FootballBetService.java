@@ -39,15 +39,6 @@ public interface FootballBetService {
     List<String> acknowledgeAll(List<String> matchIds);
 
     /**
-     * Retrieves userBets for a number of IDs and returns a map of the resulting values.
-     *
-     * @param userId the user for which we need to extract bets
-     * @param ids    match ids
-     * @return user bets corresponding to the ids received as param
-     */
-    List<Bet> getBetsFor(String userId, List<String> ids);
-
-    /**
      * Retrieves userBets for a number of filters.
      *
      *
