@@ -20,6 +20,7 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import static integration.Constants.*;
@@ -48,18 +49,18 @@ public class EndpointsIntegrationTest {
     public void callingTheAddBetWebMethodShouldSaveABetInTheDatabase() throws Exception {
         MongoCollection<Document> collection = Given.aDataSource();
 
-        HttpResponse response = When.iMakeAPostRequest(PROTOCOL + "://" + HOST + ":" + PORT + ADD_BET_ENDPOINT, Constants.POST_JSON);
+        HttpResponse response = When.iMakeAPostRequest(PROTOCOL + "://" + HOST + ":" + PORT + String.format(ADD_BET_ENDPOINT, "aa"), Constants.POST_JSON);
         String betResponse = convertResponse(response);
 
-        Then.theBetResponseIsOk(betResponse);
-        Then.theDatasourceContainsBet(asBetResponse(betResponse).getId(), collection);
+        List<String> urls = asBetResponse(betResponse).getUrls();
+
+        assertEquals(1, urls.size());
+        Then.theDatasourceContainsBet(urls.get(0), collection);
     }
 
     @Test
     public void callingTheAddBetWebMethodShouldFailWhenSchemaIsInvalid() throws Exception {
-        MongoCollection<Document> collection = Given.aDataSource();
-
-        HttpResponse response = When.iMakeAPostRequest(PROTOCOL + "://" + HOST + ":" + PORT + ADD_BET_ENDPOINT, Constants.INVALID_POST_JSON);
+        HttpResponse response = When.iMakeAPostRequest(PROTOCOL + "://" + HOST + ":" + PORT + String.format(ADD_BET_ENDPOINT, "aa"), Constants.INVALID_POST_JSON);
 
         assertTrue(EntityUtils.toString(response.getEntity()).contains("required key [token] not found"));
     }

@@ -48,7 +48,7 @@ public class MessagingIntegrationTest {
     public void aggregationMessageShouldTriggerAggregationReply() throws Exception {
 
         for (int i = 0; i < 101; i++) {
-            When.iMakeAPostRequest(PROTOCOL + "://" + HOST + ":" + PORT + ADD_BET_ENDPOINT, Constants.getBet("user1" + i, "aa"));
+            When.iMakeAPostRequest(PROTOCOL + "://" + HOST + ":" + PORT + String.format(ADD_BET_ENDPOINT, "user1"+i), Constants.getBet("aa"));
         }
         When.iSendAMessage("{\"payload\":[\"aa\"],\"type\":\"BETS_REQUEST\"}", null, SCORES_TO_BETS_QUEUE, SCORES_TO_BETS_ROUTE);
 
@@ -66,7 +66,7 @@ public class MessagingIntegrationTest {
     public void acknowledgeMessageShouldMakeDbEntryAcknowledged() throws Exception {
         MongoCollection<Document> dataSource = Given.aDataSource();
 
-        When.iMakeAPostRequest(PROTOCOL + "://" + HOST + ":" + PORT + ADD_BET_ENDPOINT, Constants.POST_JSON);
+        When.iMakeAPostRequest(PROTOCOL + "://" + HOST + ":" + PORT + String.format(ADD_BET_ENDPOINT, "user1"), Constants.POST_JSON);
         When.iSendAMessage("{\"payload\":[\"aa\"],\"type\":\"ACKNOWLEDGE_REQUEST\"}", null, BETS_TO_SCORES_QUEUE, SCORES_TO_BETS_ROUTE);
 
         TimeUnit.SECONDS.sleep(1);

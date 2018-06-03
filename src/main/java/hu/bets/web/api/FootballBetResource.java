@@ -37,18 +37,21 @@ public class FootballBetResource {
     }
 
     @POST
-    @Path("bet")
+    @Path("{userId}/bets")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public String postFootballResult(String input) {
+    public Response postFootballResult(@PathParam("userId") String userId, String input) {
 
         LOGGER.info("Save bet request received: " + input);
         try {
             SaveBetRequest saveBetRequest = validateAndParse(input);
-            footballBetService.saveBet(saveBetRequest);
-            return JSON.toJson(SaveBetResponse.success(saveBetRequest.getUserId()));
-        } catch (BetSaveException | InvalidScemaException e) {
-            return JSON.toJson(SaveBetResponse.failure(e.getMessage()));
+            List<String> betIds = footballBetService.saveBet(userId, saveBetRequest);
+            return Response.ok(SaveBetResponse.success(betIds)).build();
+        } catch (BetSaveException e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(SaveBetResponse.failure(e.getMessage())).build();
+        } catch (InvalidScemaException e) {
+            LOGGER.warn("Invalid request received. Errors were: {}. Rejecting.", e.getMessage());
+            return Response.status(Response.Status.BAD_REQUEST).entity(SaveBetResponse.failure(e.getMessage())).build();
         }
     }
 

@@ -57,7 +57,8 @@
           "matchId",
           "homeTeamId",
           "homeTeamGoals",
-          "awayTeamGoals"
+          "awayTeamGoals",
+          "matchDate"
         ],
         "type": "object"
       },
@@ -68,18 +69,11 @@
       "maxLength": 100,
       "minLength": 1,
       "type": "string"
-    },
-    "userId": {
-      "id": "/properties/userId",
-      "maxLength": 100,
-      "minLength": 1,
-      "type": "string"
     }
   },
   "required": [
     "bets",
-    "token",
-    "userId"
+    "token"
   ],
   "type": "object"
 }

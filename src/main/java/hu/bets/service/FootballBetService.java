@@ -15,11 +15,12 @@ public interface FootballBetService {
     /**
      * Saves a number of bets to the persistent storage.
      *
+     * @param userId
      * @param saveBetRequest
      * @return the ID of the new;y saved bet
      * @throws BetSaveException
      */
-    void saveBet(SaveBetRequest saveBetRequest) throws BetSaveException;
+    List<String> saveBet(String userId, SaveBetRequest saveBetRequest) throws BetSaveException;
 
     /**
      * Finds the bets for the matches referenced by betAggregationRequest

@@ -30,10 +30,17 @@ public class DefaultFootballBetService implements FootballBetService {
     }
 
     @Override
-    public void saveBet(SaveBetRequest saveBetRequest) throws BetSaveException {
+    public List<String> saveBet(String userId, SaveBetRequest saveBetRequest) throws BetSaveException {
+
+        List<String> betIds = new ArrayList<>();
+
         for (BetRequest betRequest : saveBetRequest.getBets()) {
-            footballDAO.save(betConverter.createNewUserBet(saveBetRequest.getUserId(), betRequest));
+            String betId = footballDAO.save(betConverter.createNewUserBet(userId, betRequest));
+
+            betIds.add(betId);
         }
+
+        return betIds;
     }
 
     @Override
