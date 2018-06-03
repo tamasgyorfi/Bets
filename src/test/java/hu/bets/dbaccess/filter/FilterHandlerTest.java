@@ -29,6 +29,6 @@ public class FilterHandlerTest {
 
         String result = filterHandler.processAll(filters);
 
-        assertEquals("{matchId: \"B115\", userId: { $in: [ \"B115\", \"C116\" ] }, matchId: { &gte: \"1\", &lte: \"100\" }}", result);
+        assertEquals("{matchId: \"B115\", userId: { $in: [ \"B115\", \"C116\" ] }, matchId: { $gte: \"1\", $lte: \"100\" }}", result);
     }
 }

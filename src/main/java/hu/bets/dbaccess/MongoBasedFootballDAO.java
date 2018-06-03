@@ -12,6 +12,8 @@ import hu.bets.model.filter.Filter;
 import hu.bets.util.Json;
 import org.bson.Document;
 import org.bson.conversions.Bson;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +21,8 @@ import java.util.Optional;
 import java.util.function.Consumer;
 
 public class MongoBasedFootballDAO implements FootballDAO {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(MongoBasedFootballDAO.class);
 
     private MongoCollection<Document> collection;
     private FilterHandler filterHandler;
@@ -83,7 +87,11 @@ public class MongoBasedFootballDAO implements FootballDAO {
 
     @Override
     public List<Bet> getBetsForFilter(List<Filter> filters) {
-        Document document = Document.parse(filterHandler.processAll(filters));
+
+        String query = filterHandler.processAll(filters);
+
+        LOGGER.info("Executing query: {}", query);
+        Document document = Document.parse(query);
 
         FindIterable<Document> documents = collection.find(document);
         List<Bet> bets = new ArrayList<>();
@@ -93,6 +101,7 @@ public class MongoBasedFootballDAO implements FootballDAO {
             bets.add(userBet.getBet());
         });
 
+        LOGGER.info("Found the following bets matching the query {} : {}", query, bets);
         return bets;
     }
 

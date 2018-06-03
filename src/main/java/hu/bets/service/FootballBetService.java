@@ -49,8 +49,10 @@ public interface FootballBetService {
     /**
      * Retrieves userBets for a number of filters.
      *
+     *
+     * @param userId the user's id
      * @param filters the filters to apply for the data query
      * @return user bets satisfying the filter conditions (all filters are connected by AND semantic)
      */
-    List<Bet> getBetsForFilter(List<Filter> filters);
+    List<Bet> getBetsForFilter(String userId, List<Filter> filters);
 }

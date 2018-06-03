@@ -13,7 +13,7 @@ public class BetConverter {
 
     public UserBet createNewUserBet(String userId, BetRequest saveBetRequest) {
         return new UserBet(userId,
-                new Match(saveBetRequest.getMatchId(), saveBetRequest.getCompetitionId(), saveBetRequest.getHomeTeamId(), saveBetRequest.getAwayTeamId()),
+                new Match(saveBetRequest.getMatchId(), saveBetRequest.getMatchDate(), saveBetRequest.getCompetitionId(), saveBetRequest.getHomeTeamId(), saveBetRequest.getAwayTeamId()),
                 new Bet(saveBetRequest.getMatchId(), idGenerator.generateBetId(userId), saveBetRequest.getHomeTeamGoals(), saveBetRequest.getAwayTeamGoals()));
     }
 }

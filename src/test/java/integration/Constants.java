@@ -8,6 +8,7 @@ public class Constants {
             "    {\n" +
             "      \"competitionId\": \"aa\",\n" +
             "      \"matchId\": \"aa\",\n" +
+            "      \"matchDate\": \"2018/03/19 13:00:00\",\n" +
             "      \"homeTeamId\": \"aa\",\n" +
             "      \"awayTeamId\": \"aa\",\n" +
             "      \"homeTeamGoals\": 1,\n" +
@@ -23,7 +24,7 @@ public class Constants {
     public static final String ADD_BET_ENDPOINT = "/bets/football/v1/bet";
     public static final String QUERY_BETS_ENDPOINT = "/bets/football/v1/userBets";
     public static final String INFO_ENDPOINT = "/bets/football/v1/info";
-    public static final String FILTER_QUERY_ENDPOINT = "/bets/football/v1/user-bets";
+    public static final String FILTER_QUERY_ENDPOINT = "/bets/football/v1/%s/user-bets";
 
     public static final String PROTOCOL = "http";
 
@@ -55,6 +56,24 @@ public class Constants {
                 "  \"token\": \"djskal\"\n" +
                 "}";
     }
+
+    public static String getBet(String userId, String matchId, String matchDate) {
+        return "{\n" +
+                "  \"userId\":\"" + userId + "\",\n" +
+                "  \"bets\": [\n" +
+                "    {\n" +
+                "      \"competitionId\": \"aa\",\n" +
+                "      \"matchId\": \"" + matchId + "\",\n" +
+                "      \"matchDate\": \"" + matchDate + "\",\n" +
+                "      \"homeTeamId\": \"aa\",\n" +
+                "      \"awayTeamId\": \"aa\",\n" +
+                "      \"homeTeamGoals\": 1,\n" +
+                "      \"awayTeamGoals\": 0\n" +
+                "    }],\n" +
+                "  \"token\": \"djskal\"\n" +
+                "}";
+    }
+
 
     public static String getBet(String userId, String matchId, String betId, int homeGoals, int awayGoals) {
         return "{\n" +

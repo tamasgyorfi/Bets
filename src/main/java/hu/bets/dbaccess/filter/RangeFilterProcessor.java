@@ -20,7 +20,7 @@ public class RangeFilterProcessor implements FilterProcessor {
     public String handle(Filter filter) {
         if (canHandle(filter)) {
             RangeFilter rangeFilter = (RangeFilter)filter;
-            return dbFieldTranslator.translate(rangeFilter.getField()) + ": { &gte: \"" + rangeFilter.getLower() + "\", &lte: \"" + rangeFilter.getUpper() + "\" }";
+            return dbFieldTranslator.translate(rangeFilter.getField()) + ": { $gte: \"" + rangeFilter.getLower() + "\", $lte: \"" + rangeFilter.getUpper() + "\" }";
         }
 
         return "";

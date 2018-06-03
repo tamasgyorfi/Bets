@@ -7,16 +7,19 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class Match {
 
     private transient String matchId;
+    private String matchDate;
     private String competitionId;
     private String homeTeamId;
     private String awayTeamId;
 
     @JsonCreator
     public Match(@JsonProperty("matchId") String matchId,
+                 @JsonProperty("matchDate") String matchDate,
                  @JsonProperty("competitionId") String competitionId,
                  @JsonProperty("homeTeamId") String homeTeamId,
                  @JsonProperty("awayTeamId") String awayTeamId) {
         this.matchId = matchId;
+        this.matchDate = matchDate;
         this.competitionId = competitionId;
         this.homeTeamId = homeTeamId;
         this.awayTeamId = awayTeamId;
@@ -37,5 +40,20 @@ public class Match {
 
     public String getAwayTeamId() {
         return awayTeamId;
+    }
+
+    public String getMatchDate() {
+        return matchDate;
+    }
+
+    @Override
+    public String toString() {
+        return "Match{" +
+                "matchId='" + matchId + '\'' +
+                ", matchDate='" + matchDate + '\'' +
+                ", competitionId='" + competitionId + '\'' +
+                ", homeTeamId='" + homeTeamId + '\'' +
+                ", awayTeamId='" + awayTeamId + '\'' +
+                '}';
     }
 }

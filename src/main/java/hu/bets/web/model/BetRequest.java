@@ -10,9 +10,11 @@ public class BetRequest {
     private final String awayTeamId;
     private final int homeTeamGoals;
     private final int awayTeamGoals;
+    private final String matchDate;
 
     public BetRequest(@JsonProperty("competitionId") String competitionId,
                       @JsonProperty("matchId") String matchId,
+                      @JsonProperty("matchDate") String matchDate,
                       @JsonProperty("betId") String betId,
                       @JsonProperty("homeTeamId") String homeTeamId,
                       @JsonProperty("awayTeamId") String awayTeamId,
@@ -20,6 +22,7 @@ public class BetRequest {
                       @JsonProperty("awayTeamGoals") int awayTeamGoals) {
         this.competitionId = competitionId;
         this.matchId = matchId;
+        this.matchDate = matchDate;
         this.betId = betId;
         this.homeTeamId = homeTeamId;
         this.awayTeamId = awayTeamId;
@@ -53,5 +56,9 @@ public class BetRequest {
 
     public int getAwayTeamGoals() {
         return awayTeamGoals;
+    }
+
+    public String getMatchDate() {
+        return matchDate;
     }
 }

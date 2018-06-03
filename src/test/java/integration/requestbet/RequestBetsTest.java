@@ -9,6 +9,7 @@ import hu.bets.model.data.UserBet;
 import hu.bets.model.filter.EqualsFilter;
 import hu.bets.model.filter.Field;
 import hu.bets.model.filter.MultiEqualsFilter;
+import hu.bets.model.filter.RangeFilter;
 import hu.bets.steps.Given;
 import hu.bets.steps.When;
 import hu.bets.steps.util.ApplicationContextHolder;
@@ -22,11 +23,13 @@ import integration.FakeDbConfig;
 import org.apache.http.HttpResponse;
 import org.apache.http.util.EntityUtils;
 import org.bson.Document;
+import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -48,6 +51,12 @@ public class RequestBetsTest {
     @AfterClass
     public static void after() throws Exception {
         Given.environmentIsShutDown();
+    }
+
+    @After
+    public void clearDatabase() {
+        MongoCollection mongoCollection = ApplicationContextHolder.getBean(MongoCollection.class);
+        mongoCollection.drop();
     }
 
     @Test
@@ -106,7 +115,7 @@ public class RequestBetsTest {
         When.iMakeAPostRequest(PROTOCOL + "://" + HOST + ":" + PORT + ADD_BET_ENDPOINT, Constants.getBet("user2", "match4"));
         When.iMakeAPostRequest(PROTOCOL + "://" + HOST + ":" + PORT + ADD_BET_ENDPOINT, Constants.getBet("user2", "match5"));
 
-        HttpResponse httpResponse = When.iMakeAPostRequest(PROTOCOL + "://" + HOST + ":" + PORT + FILTER_QUERY_ENDPOINT, new Json().toJson(new BetForFilterRequest(Arrays.asList(new EqualsFilter(Field.USER_ID, "user1")), "token")));
+        HttpResponse httpResponse = When.iMakeAPostRequest(PROTOCOL + "://" + HOST + ":" + PORT + String.format(FILTER_QUERY_ENDPOINT, "user1"), new Json().toJson(new BetForFilterRequest(Collections.emptyList(), "token")));
         BetForIdResponse betForIdResponse = new Json().fromJson(EntityUtils.toString(httpResponse.getEntity()), BetForIdResponse.class);
 
         assertEquals("", betForIdResponse.getError());
@@ -134,9 +143,8 @@ public class RequestBetsTest {
         When.iMakeAPostRequest(PROTOCOL + "://" + HOST + ":" + PORT + ADD_BET_ENDPOINT, Constants.getBet("user2", "match4"));
         When.iMakeAPostRequest(PROTOCOL + "://" + HOST + ":" + PORT + ADD_BET_ENDPOINT, Constants.getBet("user2", "match5"));
 
-        HttpResponse httpResponse = When.iMakeAPostRequest(PROTOCOL + "://" + HOST + ":" + PORT + FILTER_QUERY_ENDPOINT, new Json().toJson(
+        HttpResponse httpResponse = When.iMakeAPostRequest(PROTOCOL + "://" + HOST + ":" + PORT + String.format(FILTER_QUERY_ENDPOINT, "user1"), new Json().toJson(
                 new BetForFilterRequest(Arrays.asList(
-                        new EqualsFilter(Field.USER_ID, "user1"),
                         new MultiEqualsFilter(Field.MATCH_ID, Arrays.asList("match2", "match3", "match4", "match9"))
                 ), "token")));
         BetForIdResponse betForIdResponse = new Json().fromJson(EntityUtils.toString(httpResponse.getEntity()), BetForIdResponse.class);
@@ -150,26 +158,28 @@ public class RequestBetsTest {
     }
 
     @Test
-    public void filterQueryApiShouldReturnAnErrorForNoFilterSpecified() throws Exception {
-        When.iMakeAPostRequest(PROTOCOL + "://" + HOST + ":" + PORT + ADD_BET_ENDPOINT, Constants.getBet("user1", "match1"));
-        When.iMakeAPostRequest(PROTOCOL + "://" + HOST + ":" + PORT + ADD_BET_ENDPOINT, Constants.getBet("user1", "match2"));
-        When.iMakeAPostRequest(PROTOCOL + "://" + HOST + ":" + PORT + ADD_BET_ENDPOINT, Constants.getBet("user1", "match3"));
-        When.iMakeAPostRequest(PROTOCOL + "://" + HOST + ":" + PORT + ADD_BET_ENDPOINT, Constants.getBet("user1", "match4"));
-        When.iMakeAPostRequest(PROTOCOL + "://" + HOST + ":" + PORT + ADD_BET_ENDPOINT, Constants.getBet("user1", "match5"));
+    public void shouldReturnMatchesByDateRangeFilter() throws Exception {
+        When.iMakeAPostRequest(PROTOCOL + "://" + HOST + ":" + PORT + ADD_BET_ENDPOINT, Constants.getBet("user1", "match1", "2018/01/25 15:00:00"));
+        When.iMakeAPostRequest(PROTOCOL + "://" + HOST + ":" + PORT + ADD_BET_ENDPOINT, Constants.getBet("user1", "match2", "2018/01/26 15:00:00"));
+        When.iMakeAPostRequest(PROTOCOL + "://" + HOST + ":" + PORT + ADD_BET_ENDPOINT, Constants.getBet("user1", "match3", "2018/01/27 15:00:00"));
+        When.iMakeAPostRequest(PROTOCOL + "://" + HOST + ":" + PORT + ADD_BET_ENDPOINT, Constants.getBet("user1", "match4", "2018/01/28 15:00:00"));
+        When.iMakeAPostRequest(PROTOCOL + "://" + HOST + ":" + PORT + ADD_BET_ENDPOINT, Constants.getBet("user1", "match5", "2018/01/29 15:00:00"));
 
-        When.iMakeAPostRequest(PROTOCOL + "://" + HOST + ":" + PORT + ADD_BET_ENDPOINT, Constants.getBet("user2", "match1"));
-        When.iMakeAPostRequest(PROTOCOL + "://" + HOST + ":" + PORT + ADD_BET_ENDPOINT, Constants.getBet("user2", "match2"));
-        When.iMakeAPostRequest(PROTOCOL + "://" + HOST + ":" + PORT + ADD_BET_ENDPOINT, Constants.getBet("user2", "match3"));
-        When.iMakeAPostRequest(PROTOCOL + "://" + HOST + ":" + PORT + ADD_BET_ENDPOINT, Constants.getBet("user2", "match4"));
-        When.iMakeAPostRequest(PROTOCOL + "://" + HOST + ":" + PORT + ADD_BET_ENDPOINT, Constants.getBet("user2", "match5"));
+        When.iMakeAPostRequest(PROTOCOL + "://" + HOST + ":" + PORT + ADD_BET_ENDPOINT, Constants.getBet("user2", "match1", "2018/01/30 15:00:00"));
+        When.iMakeAPostRequest(PROTOCOL + "://" + HOST + ":" + PORT + ADD_BET_ENDPOINT, Constants.getBet("user2", "match2", "2018/01/31 15:00:00"));
+        When.iMakeAPostRequest(PROTOCOL + "://" + HOST + ":" + PORT + ADD_BET_ENDPOINT, Constants.getBet("user2", "match3", "2018/02/01 15:00:00"));
+        When.iMakeAPostRequest(PROTOCOL + "://" + HOST + ":" + PORT + ADD_BET_ENDPOINT, Constants.getBet("user2", "match4", "2018/02/02 15:00:00"));
+        When.iMakeAPostRequest(PROTOCOL + "://" + HOST + ":" + PORT + ADD_BET_ENDPOINT, Constants.getBet("user2", "match5", "2018/02/03 15:00:00"));
 
-        HttpResponse httpResponse = When.iMakeAPostRequest(PROTOCOL + "://" + HOST + ":" + PORT + FILTER_QUERY_ENDPOINT, new Json().toJson(
-                new BetForFilterRequest(Arrays.asList(), "token")));
+        HttpResponse httpResponse = When.iMakeAPostRequest(PROTOCOL + "://" + HOST + ":" + PORT + String.format(FILTER_QUERY_ENDPOINT, "user1"), new Json().toJson(new BetForFilterRequest(Arrays.asList(new RangeFilter(Field.MATCH_DATE, "2018/01/27", "2018/02/01")), "token")));
+
         BetForIdResponse betForIdResponse = new Json().fromJson(EntityUtils.toString(httpResponse.getEntity()), BetForIdResponse.class);
 
-        assertEquals("Empty filter clauses are not permitted.", betForIdResponse.getError());
+        assertEquals("", betForIdResponse.getError());
         List<Bet> payload = betForIdResponse.getPayload();
-        assertNull(payload);
+        assertEquals(3, payload.size());
+        assertEquals(new Bet("match3", "aa", (byte) 1, (byte) 0), payload.get(0));
+        assertEquals(new Bet("match4", "aa", (byte) 1, (byte) 0), payload.get(1));
+        assertEquals(new Bet("match5", "aa", (byte) 1, (byte) 0), payload.get(2));
     }
-
 }
