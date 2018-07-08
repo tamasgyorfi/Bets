@@ -15,8 +15,6 @@
 
     <properties>
         <spring.version>4.3.7.RELEASE</spring.version>
-        <glassfish.version>2.25.1</glassfish.version>
-        <jetty.version>9.4.3.v20170317</jetty.version>
         <project.scm.id>git</project.scm.id>
     </properties>
 
@@ -52,8 +50,8 @@
 
         <dependency>
             <groupId>hu.bets</groupId>
-            <artifactId>football-bets-shared</artifactId>
-            <version>0.0.3</version>
+            <artifactId>filter-query</artifactId>
+            <version>0.0.4</version>
         </dependency>
 
         <dependency>

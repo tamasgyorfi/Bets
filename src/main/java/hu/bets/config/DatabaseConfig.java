@@ -4,6 +4,7 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import hu.bets.common.config.CommonMongoConfig;
 import hu.bets.dbaccess.filter.*;
+import hu.bets.model.processor.*;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -33,23 +34,23 @@ public class DatabaseConfig {
     }
 
     @Bean
-    public DbFieldTranslator dbFieldTranslator() {
-        return new DbFieldTranslator();
+    public BetsDbFieldTranslator dbFieldTranslator() {
+        return new BetsDbFieldTranslator();
     }
 
     @Bean
-    public EqualsFilterProcessor equalsFilterProcessor(DbFieldTranslator dbFieldTranslator){
-        return new EqualsFilterProcessor(dbFieldTranslator);
+    public EqualsFilterProcessor equalsFilterProcessor(BetsDbFieldTranslator betsDbFieldTranslator){
+        return new EqualsFilterProcessor(betsDbFieldTranslator);
     }
 
     @Bean
-    public MultiEqualsFilterProcessor multiEqualsFilterProcessor(DbFieldTranslator dbFieldTranslator){
-        return new MultiEqualsFilterProcessor(dbFieldTranslator);
+    public MultiEqualsFilterProcessor multiEqualsFilterProcessor(BetsDbFieldTranslator betsDbFieldTranslator){
+        return new MultiEqualsFilterProcessor(betsDbFieldTranslator);
     }
 
     @Bean
-    public RangeFilterProcessor rangeFilterProcessor(DbFieldTranslator dbFieldTranslator){
-        return new RangeFilterProcessor(dbFieldTranslator);
+    public RangeFilterProcessor rangeFilterProcessor(BetsDbFieldTranslator betsDbFieldTranslator){
+        return new RangeFilterProcessor(betsDbFieldTranslator);
     }
 
 }
